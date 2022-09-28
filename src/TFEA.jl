@@ -1,9 +1,6 @@
 module TFEA
 
-# Write your package code here.
-function TFEA_test()
-    println("Congratulations! Test successful!")
-end
+include("gen_Nodes_grid.jl")
 
 function cal_list_DOF(n_nodes::Int64, n_dir)
     n_DOF = length(n_dir) * n_nodes
