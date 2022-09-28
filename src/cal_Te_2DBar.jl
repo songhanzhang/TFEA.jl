@@ -5,9 +5,11 @@ function cal_Te_2DBar(e_nodes)
     xj = e_nodes[2,1]
     yj = e_nodes[2,2]
 
+    Le = sqrt((xj-xi)^2 + (yj-yi)^2)
+
     ss = (yj-yi)/Le
     cs = (xj-xi)/Le
-    
+
     Te = [ cs   ss    0    0
           -ss   cs    0    0
             0    0   cs   ss
