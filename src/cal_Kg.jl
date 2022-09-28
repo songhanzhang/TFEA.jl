@@ -14,7 +14,6 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
         end
 
         if Elements[i_e,2] == "2D_Bar"
-
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
@@ -25,17 +24,10 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             yi = Nodes[i_node,3]
             xj = Nodes[j_node,2]
             yj = Nodes[j_node,3]
-            Le = sqrt((xj-xi)^2+(yj-yi)^2)
-            Ke_bar = E*A/Le*[  1   0  -1   0
-                               0   0   0   0
-                              -1   0   1   0
-                               0   0   0   0]
-            ss = (yj-yi)/Le
-            cs = (xj-xi)/Le
-            Te = [ cs   ss    0    0
-                  -ss   cs    0    0
-                    0    0   cs   ss
-                    0    0  -ss   cs ]
+            e_nodes = [ xi yi
+                        xj yj ]
+            Ke_bar = cal_Ke_bar_2DBar(e_nodes,E,A)
+            Te = cal_Te_2DBar(e_nodes)
             Ke = transpose(Te) * Ke_bar * Te
             DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
             DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
