@@ -1,4 +1,4 @@
-function Ke_bar = cal_Ke_bar_2DBar(e_nodes,E,A)
+function cal_Ke_bar_2DBar(e_nodes,E,A)
 
     xi = e_nodes[1,1]
     yi = e_nodes[1,2]
