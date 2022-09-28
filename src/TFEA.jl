@@ -2,7 +2,7 @@ module TFEA
 
 # Write your package code here.
 function TFEA_test()
-    println("Test successful!")
+    println("Congratulations! Test successful!")
 end
 
 function cal_list_DOF(n_nodes::Int64, n_dir)
@@ -66,7 +66,7 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             Kg[DOFs,DOFs] += Ke
         end
     end
-    return Kg 
+    return Kg
 end
 
 function cal_Mg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
@@ -113,7 +113,7 @@ function cal_Mg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOF_3 = findall(isequal(j_node + 0.1),list_DOF[:,2])[1]
             DOF_4 = findall(isequal(j_node + 0.2),list_DOF[:,2])[1]
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
-            Mg[DOFs,DOFs] += Me            
+            Mg[DOFs,DOFs] += Me
         end
     end
     return Mg
