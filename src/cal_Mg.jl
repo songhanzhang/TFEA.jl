@@ -25,17 +25,11 @@ function cal_Mg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             yi = Nodes[i_node,3]
             xj = Nodes[j_node,2]
             yj = Nodes[j_node,3]
-            Le = sqrt((xj-xi)^2+(yj-yi)^2)
-            Me_bar = ρ*A/Le*[ 1/3   0  1/6   0
-                                0   0    0   0
-                              1/6   0  1/3   0
-                                0   0    0   0 ]
-            ss = (yj-yi)/Le
-            cs = (xj-xi)/Le
-            Te = [ cs   ss    0    0
-                  -ss   cs    0    0
-                    0    0   cs   ss
-                    0    0  -ss   cs ]
+            e_nodes = [ xi yi
+                        xj yj ]
+            Le = sqrt((xj-xi)^2 + (yj-yi)^2)
+            Me_bar = cal_Me_bar_2DBar(Le,ρ,A)
+            Te = cal_Te_2DBar(e_nodes)
             Me = transpose(Te) * Me_bar * Te
             DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
             DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
