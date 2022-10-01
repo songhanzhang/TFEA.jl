@@ -1,3 +1,3 @@
-# TFEA (Toolbox for Finite Element Analysis)
+# TFEA
 
-[![Build Status](https://github.com/songhanzhang/TFEA.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/songhanzhang/TFEA.jl/actions/workflows/CI.yml?query=branch%3Amain)
+This is a toolbox for finite element analysis, including model creating, evaluation of mass and stiffness matrices, processing for bonudary conditions, as well as solvers for static, dynamic and eigenvalue problems. The package is current being developed.
