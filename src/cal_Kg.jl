@@ -37,6 +37,29 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Kg[DOFs,DOFs] += Ke
         end
+
+        if Elements[i_e,2] == "2D_LGL_36n"
+            i_mat = Elements[i_e,3]
+            i_real = Elements[i_e,4]
+            E = Materials[i_mat,2][1]
+            v = Materials[i_mat,2][3]
+            t = Reals[i_real,2][1]
+            Nodes_xy = zeros(36,2)
+            for ii = 1:36
+                ii_node = Elements[i_e,5][ii]
+                Nodes_xy[ii,1:2] = [Nodes[ii_node,2] Nodes[ii_node,3]]
+            end
+            Ke = cal_Ke_2D_LGL_36(E,ν,t,Nodes_xy)
+            DOFs = Array{Int64,1}(undef,72)
+            for i_node = 1:36
+                for i_dir = 1:2
+                    n_node = Elements[i_e,5][i_node]
+                    DOFs[(i_node-1)*2+i_dir] = Int(findall(isequal(n_node+0.1*i_dir),list_DOF[:,2])[1])
+                end
+            end
+            Kg[DOFs,DOFs] += Ke
+        end
+
     end
 
     return Kg
