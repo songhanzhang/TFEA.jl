@@ -36,6 +36,8 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOF_4 = findall(isequal(j_node + 0.2),list_DOF[:,2])[1]
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Kg[DOFs,DOFs] += Ke
+        elseif Elements[i_e,2] == "2D_Euler_Beam"
+            Kg[DOFs,DOFs] += Ke
         elseif Elements[i_e,2] == "2D_LGL_36n"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
