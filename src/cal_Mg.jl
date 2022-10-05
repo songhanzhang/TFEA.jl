@@ -38,7 +38,7 @@ function cal_Mg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Mg[DOFs,DOFs] += Me
         elseif Elements[i_e,2] == "2D_Euler_Beam"
-            
+            Mg[DOFs,DOFs] += Me
         elseif Elements[i_e,2] == "2D_LGL_36n"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
