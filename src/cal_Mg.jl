@@ -38,6 +38,13 @@ function cal_Mg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Mg[DOFs,DOFs] += Me
         elseif Elements[i_e,2] == "2D_Euler_Beam"
+            DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
+            DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
+            DOF_3 = findall(isequal(i_node + 0.6),list_DOF[:,2])[1]
+            DOF_4 = findall(isequal(j_node + 0.1),list_DOF[:,2])[1]
+            DOF_5 = findall(isequal(j_node + 0.2),list_DOF[:,2])[1]
+            DOF_6 = findall(isequal(j_node + 0.6),list_DOF[:,2])[1]
+            DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
             Mg[DOFs,DOFs] += Me
         elseif Elements[i_e,2] == "2D_LGL_36n"
             i_mat = Elements[i_e,3]
