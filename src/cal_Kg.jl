@@ -37,6 +37,7 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Kg[DOFs,DOFs] += Ke
         elseif Elements[i_e,2] == "2D_Euler_Beam"
+            Ke = transpose(Te) * Ke_bar * Te
             DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
             DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
             DOF_3 = findall(isequal(i_node + 0.6),list_DOF[:,2])[1]
