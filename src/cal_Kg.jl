@@ -37,6 +37,20 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Kg[DOFs,DOFs] += Ke
         elseif Elements[i_e,2] == "2D_Euler_Beam"
+            i_mat = Elements[i_e,3]
+            i_real = Elements[i_e,4]
+            E = Materials[i_mat,2][1]
+            A = Reals[i_real,2][1]
+            i_node = Elements[i_e,5][1]
+            j_node = Elements[i_e,5][2]
+            xi = Nodes[i_node,2]
+            yi = Nodes[i_node,3]
+            xj = Nodes[j_node,2]
+            yj = Nodes[j_node,3]
+            e_nodes = [ xi yi
+                        xj yj ]
+            Le = sqrt((xj-xi)^2 + (yj-yi)^2)
+            
             Ke_bar = cal_Ke_bar_2DEulerBeam(Le,E,A)
             Te = cal_Te_2DBeamr(e_nodes)
             Ke = transpose(Te) * Ke_bar * Te
