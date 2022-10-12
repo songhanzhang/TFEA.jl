@@ -48,11 +48,9 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             yi = Nodes[i_node,3]
             xj = Nodes[j_node,2]
             yj = Nodes[j_node,3]
-            e_nodes = [ xi yi
-                        xj yj ]
             Le = sqrt((xj-xi)^2 + (yj-yi)^2)
             Ke_bar = cal_Ke_bar_2DEulerBeam(Le,E,A,Izz)
-            Te = cal_Te_2DBeamr(e_nodes)
+            Te = cal_Te_2DBeam(xi,yi,xj,yj)
             Ke = transpose(Te) * Ke_bar * Te
             DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
             DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
