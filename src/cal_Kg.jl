@@ -41,6 +41,7 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
             A = Reals[i_real,2][1]
+            Izz = Real[i_real,2][3]
             i_node = Elements[i_e,5][1]
             j_node = Elements[i_e,5][2]
             xi = Nodes[i_node,2]
