@@ -1,9 +1,4 @@
-function cal_Te_2DBar(e_nodes)
-
-    xi = e_nodes[1,1]
-    yi = e_nodes[1,2]
-    xj = e_nodes[2,1]
-    yj = e_nodes[2,2]
+function cal_Te_2DBar(xi,yi,xj,yj)
 
     Le = sqrt((xj-xi)^2 + (yj-yi)^2)
 
