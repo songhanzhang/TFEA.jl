@@ -63,6 +63,8 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
             ρ = Materials[i_mat,2][2]
+            ν = Materials[i_mat,2][3]
+            G = Materials[i_mat,2][4]
             A = Reals[i_real,2][1]
             Ixx = Reals[i_real,2][2]
             Iyy = Reals[i_real,2][3]
@@ -80,7 +82,7 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             yk = Nodes[k_node,3]
             zk = Nodes[k_node,4]
             Le = sqrt((xj-xi)^2 + (yj-yi)^2 + (zj-zi)^2)
-            Ke_bar = cal_Ke_bar_3DEulerBeam(Le,E,A,Ixx,Iyy,Izz)
+            Ke_bar = cal_Ke_bar_3DEulerBeam(Le,E,G,A,Ixx,Iyy,Izz)
             Te_bar = cal_Te_3DBeam(xi,yi,zi,xj,yj,zj,xk,yk,zk)
         elseif Elements[i_e,2] == "2D_LGL_36n"
             i_mat = Elements[i_e,3]
