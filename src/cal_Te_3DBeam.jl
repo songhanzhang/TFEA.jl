@@ -8,7 +8,7 @@ function cal_Te_3DBeam(xi,yi,zi,xj,yj,zj,xk,yk,zk)
     vec_ik = [ xk - xi
                yk - yi
                zk - zi ]
-    z_bar = cross(e1, vec_ik)
+    z_bar = cross(e1,vec_ik)
     e3 = z_bar/norm(z_bar)
 
     e2 = cross(e1,e3)
