@@ -61,9 +61,9 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
         elseif Element[i_e,2] == "3D_Euler_Beam"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
-            E   = Materials[i_mat,2][1]
-            ρ   = Materials[i_mat,2][2]
-            A   = Reals[i_real,2][1]
+            E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
+            A = Reals[i_real,2][1]
             Ixx = Reals[i_real,2][2]
             Iyy = Reals[i_real,2][3]
             Izz = Reals[i_real,2][4]
