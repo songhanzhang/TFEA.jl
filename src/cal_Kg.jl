@@ -94,6 +94,7 @@ function cal_Kg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
             Kg[DOFs,DOFs] += Ke
         elseif Element[i_e,2] == "3D_Tmsk_Beam"
+            
         elseif Elements[i_e,2] == "2D_LGL_36n"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
