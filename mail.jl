@@ -32,7 +32,7 @@ Reals = [ 1  (1) ]
 (Kg, Mg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
 Cg = spzeros(n_DOF,n_DOF)
 
-plot_mode = plot(
+plot_model = plot(
     size = (560,400),
     dpi = 600,
     grid = false,
@@ -99,3 +99,6 @@ for i_t = 3:length(Time_label)
         F_eq = Fg[:,i_t-1] + (2*Mg/ΔT^2-Kg)*Ug[:,i_t-1] - (Mg/ΔT^2-Cg/(2*ΔT))*Ug[:,i_t-2]
         Ug[:,i_t] = K_eq\F_eq
 end
+
+plot(Time_label, Ug[(7792-1)*2+1,:])
+plot!(Time_label, Ug[(137-1)*2+1,:])
