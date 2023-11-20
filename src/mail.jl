@@ -102,3 +102,176 @@ end
 
 plot(Time_label, Ug[(7792-1)*2+1,:])
 plot!(Time_label, Ug[(137-1)*2+1,:])
+
+# %% Plot wave field
+ani = @animate for i_t = 20:20:2000
+# for i_t = 50:50:10000
+    println("i_t = ", i_t)
+    u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
+
+    x_ax = 0:0.005:1
+    y_ax = 0:0.005:0.6
+
+    ux_mat = zeros(length(x_ax),length(y_ax))
+
+    for (i_x,x) in enumerate(x_ax)
+
+        if mod(i_x, Int(floor(length(x_ax)/10))) == 0
+            println("Progress: ", i_x/length(x_ax)*100, " %")
+        end
+
+        for (i_y,y) in enumerate(y_ax)
+            dist = zeros(4,5)
+            for ii = 1:4
+                for jj = 1:5
+                    x_central = 0.2 + (ii-1)*0.1
+                    y_central = 0.1 + (jj-1)*0.1
+                    dist[ii,jj] = norm([x-x_central, y-y_central])
+                end
+            end
+            if minimum(dist) < 0.02
+                ux_mat[i_x,i_y] = NaN
+                continue
+            end
+            for i_e = 1:n_elements
+                node_1 = Int(Elements[i_e,5][1])
+                node_2 = Int(Elements[i_e,5][2])
+                node_3 = Int(Elements[i_e,5][3])
+                x1 = Nodes[node_1,2]
+                y1 = Nodes[node_1,3]
+                x2 = Nodes[node_2,2]
+                y2 = Nodes[node_2,3]
+                x3 = Nodes[node_3,2]
+                y3 = Nodes[node_3,3]
+                if judge_point_inside_triangle(x1,y1,x2,y2,x3,y3,x,y)
+                    St = ( x2*y3 + x3*y1 + x1*y2 - x2*y1 - x1*y3 - x3*y2 )/2
+                    S1 = ( x3*yp + xp*y2 + x2*y3 - x3*y2 - x2*yp - xp*y3 )/2
+                    S2 = ( x1*yp + xp*y3 + x3*y1 - x1*y3 - x3*yp - xp*y1 )/2
+                    ξ = S2/St
+                    η = S3/St
+                    Nb = zeros(6)
+                    Nb[1] = (1-ξ-η)*(1-2*ξ-2*η)
+                    Nb[2] = ξ*(2*ξ-1)
+                    Nb[3] = η*(2*η-1)
+                    Nb[4] = 4*ξ*(1-ξ-η)
+                    Nb[5] = 4*ξ*η
+                    Nb[6] = 4*η*(1-ξ-η)
+                    DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
+                    DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
+                    DOF_5  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
+                    DOF_7  = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
+                    DOF_9  = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
+                    DOF_11 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
+                    DOFs = [DOF_1;DOF_3;DOF_5;DOF_7;DOF_9;DOF_11]
+                    Ue = Ug[DOFs,i_t]
+                    ux_mat[i_x,i_y] = transpose(Nb)*Ue
+                    continue
+                end
+            end
+        end
+    end
+    fig_ux = plot(size = (600,350),
+                  dpi = 300,
+                  legend = false,
+                  grid = false,
+                  frame_style = :box,
+                  tickfontsize = 10,
+                  aspect_ratio = :equal)
+    heatmap!(transpose(ux_mat), c = :jet, aspect_ratio = :equal, clim = (-5e-3,5e-3))
+    title_content = @sprintf "t = %0.2f μs" Time_label[i_t]*1e6
+    title!(title_content, titlefont = 10)
+end
+gif(
+    ani,
+    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani.gif",
+    fps=20
+)
+
+
+i_t = 1500
+u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
+
+x_ax = 0:0.002:1
+y_ax = 0:0.002:0.6
+
+ux_mat = zeros(length(x_ax),length(y_ax))
+
+for (i_x,x) in enumerate(x_ax)
+
+    if mod(i_x, Int(floor(length(x_ax)/100))) == 0
+        println("Progress: ", i_x/length(x_ax)*100, " %")
+    end
+
+    for (i_y,y) in enumerate(y_ax)
+        dist = zeros(4,5)
+        for ii = 1:4
+            for jj = 1:5
+                x_central = 0.2 + (ii-1)*0.1
+                y_central = 0.1 + (jj-1)*0.1
+                dist[ii,jj] = norm([x-x_central, y-y_central])
+            end
+        end
+        if minimum(dist) < 0.02
+            ux_mat[i_x,i_y] = NaN
+            continue
+        end
+        for i_e = 1:n_elements
+            node_1 = Int(Elements[i_e,5][1])
+            node_2 = Int(Elements[i_e,5][2])
+            node_3 = Int(Elements[i_e,5][3])
+            node_4 = Int(Elements[i_e,5][4])
+            node_5 = Int(Elements[i_e,5][5])
+            node_6 = Int(Elements[i_e,5][6])
+            x1 = Nodes[node_1,2]
+            y1 = Nodes[node_1,3]
+            x2 = Nodes[node_2,2]
+            y2 = Nodes[node_2,3]
+            x3 = Nodes[node_3,2]
+            y3 = Nodes[node_3,3]
+            if judge_point_inside_triangle(x1,y1,x2,y2,x3,y3,x,y)
+                St = ( x2*y3 + x3*y1 + x1*y2 - x2*y1 - x1*y3 - x3*y2 )/2
+                S1 = ( x3*yp + xp*y2 + x2*y3 - x3*y2 - x2*yp - xp*y3 )/2
+                S2 = ( x1*yp + xp*y3 + x3*y1 - x1*y3 - x3*yp - xp*y1 )/2
+                ξ = S2/St
+                η = S3/St
+                Nb = zeros(6)
+                Nb[1] = (1-ξ-η)*(1-2*ξ-2*η)
+                Nb[2] = ξ*(2*ξ-1)
+                Nb[3] = η*(2*η-1)
+                Nb[4] = 4*ξ*(1-ξ-η)
+                Nb[5] = 4*ξ*η
+                Nb[6] = 4*η*(1-ξ-η)
+                # DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
+                # DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
+                # DOF_5  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
+                # DOF_7  = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
+                # DOF_9  = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
+                # DOF_11 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
+                DOF_1 = (node_1-1)*2 + 1
+                DOF_2 = (node_2-1)*2 + 1
+                DOF_3 = (node_3-1)*2 + 1
+                DOF_4 = (node_4-1)*2 + 1
+                DOF_5 = (node_5-1)*2 + 1
+                DOF_6 = (node_6-1)*2 + 1
+                DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
+                Ue = Ug[DOFs,i_t]
+                ux_mat[i_x,i_y] = transpose(Nb)*Ue
+                continue
+            end
+        end
+    end
+end
+fig_ux = plot(size = (600,350),
+              dpi = 600,
+              legend = false,
+              grid = false,
+              frame_style = :box,
+              tickfontsize = 10,
+              aspect_ratio = :equal)
+heatmap(transpose(ux_mat), c = :jet, aspect_ratio = :equal, clim = (-5e-3,5e-3))
+
+# contour(transpose(ux_mat),
+#         level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-5e-3,5e-3))
+test = rand(8,20)
+nodes = ([x^2 for x = 1:8], [0.2y for y = 1:20])
+itp = interpolate(nodes, A, Gridded(Linear()))
