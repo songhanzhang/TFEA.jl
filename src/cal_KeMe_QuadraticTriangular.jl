@@ -1,4 +1,4 @@
-function cal_Ke_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
+function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
 
     Gauss = [ 0.0915762135  0.8168475730  0.1099517437
               0.0915762135  0.0915762135  0.1099517437
@@ -25,12 +25,12 @@ function cal_Ke_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
         η = Gauss(i_Gauss,2)
         H = Gauss(i_Gauss,3)
         Nb = zeros(6)
-        N[1] = (1-ξ-η)*(1-2*ξ-2*η)
-        N[2] = ξ*(2*ξ-1)
-        N[3] = η*(2*η-1)
-        N[4] = 4*ξ*(1-ξ-η)
-        N[5] = 4*ξ*η
-        N[6] = 4*η*(1-ξ-η)
+        Nb[1] = (1-ξ-η)*(1-2*ξ-2*η)
+        Nb[2] = ξ*(2*ξ-1)
+        Nb[3] = η*(2*η-1)
+        Nb[4] = 4*ξ*(1-ξ-η)
+        Nb[5] = 4*ξ*η
+        Nb[6] = 4*η*(1-ξ-η)
         dN_dξ = zeros(6)
         dN_dξ[1] = 4*η + 4*ξ - 3
         dN_dξ[2] = 4*ξ - 1
@@ -61,10 +61,12 @@ function cal_Ke_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
         B = [ dN_dx[1] 0 dN_dx[2] 0 dN_dx[3] 0 dN_dx[4] 0 dN_dx[5] 0 dN_dx[6] 0
               0 dN_dy[1] 0 dN_dy[2] 0 dN_dy[3] 0 dN_dy[4] 0 dN_dy[5] 0 dN_dy[6]
               dN_dy[1] dN_dx[1] dN_dy[2] dN_dx[2] dN_dy[3] dN_dx[3] dN_dy[4] dN_dx[4] dN_dy[5] dN_dx[5] dN_dy[6] dN_dx[6] ]
-        # N = [ N1 0 N2 0 N3 0 N4 0 N5 0 N6 0
-        #       0 N1 0 N2 0 N3 0 N4 0 N5 0 N6 ];
-        Ke = Ke + B'*D*B*det(J)*H
-        # Me = Me + rho*N'*N*det(J)*H;
+        N = kron(transpose(Nb), [ 1 0; 0 1 ])
+        Ke += transpose(B)*D*B*det(J)*H
+        Me += ρ*transpose(N)*N*det(J)*H
+        if det(J) < 0
+            println("\nAttension: The determinate of the Jacobian is negative!")
+        end
     end
 
 return Ke
