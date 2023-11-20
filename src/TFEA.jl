@@ -15,4 +15,5 @@ include("cal_Te_2DBar.jl")
 include("cal_Te_2DBeam.jl")
 include("cal_Te_3DBeam.jl")
 include("gen_Nodes_grid.jl")
+include("judge_point_inside_triangle.jl")
 # end
