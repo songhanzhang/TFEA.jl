@@ -1,4 +1,4 @@
-function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
+function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type)
 
     Gauss = [ 0.0915762135  0.8168475730  0.1099517437
               0.0915762135  0.0915762135  0.1099517437
@@ -20,10 +20,11 @@ function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
         println("\nPlease specify the plane problem type, plane stress or plane strain?")
     end
     Ke = zeros(12,12)
+    Me = zeros(12,12)
     for i_Gauss = 1:6
-        ξ = Gauss(i_Gauss,1)
-        η = Gauss(i_Gauss,2)
-        H = Gauss(i_Gauss,3)
+        ξ = Gauss[i_Gauss,1]
+        η = Gauss[i_Gauss,2]
+        H = Gauss[i_Gauss,3]
         Nb = zeros(6)
         Nb[1] = (1-ξ-η)*(1-2*ξ-2*η)
         Nb[2] = ξ*(2*ξ-1)
@@ -55,8 +56,8 @@ function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
         dN_dy = zeros(6)
         for ii = 1:6
             Temp = J \ [ dN_dξ[ii]; dN_dη[ii] ]
-            dN_dx[ii] = Temp(1,1)
-            dN_dy[ii] = Temp(2,1)
+            dN_dx[ii] = Temp[1,1]
+            dN_dy[ii] = Temp[2,1]
         end
         B = [ dN_dx[1] 0 dN_dx[2] 0 dN_dx[3] 0 dN_dx[4] 0 dN_dx[5] 0 dN_dx[6] 0
               0 dN_dy[1] 0 dN_dy[2] 0 dN_dy[3] 0 dN_dy[4] 0 dN_dy[5] 0 dN_dy[6]
@@ -69,6 +70,6 @@ function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ; type = "PlainStrain")
         end
     end
 
-return Ke
+    return Ke, Me
 
 end
