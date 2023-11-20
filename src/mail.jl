@@ -188,11 +188,11 @@ gif(
 )
 
 
-i_t = 1500
+i_t = 2000
 u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
-x_ax = 0:0.002:1
-y_ax = 0:0.002:0.6
+x_ax = 0:0.005:1
+y_ax = 0:0.005:0.6
 
 ux_mat = zeros(length(x_ax),length(y_ax))
 
@@ -230,8 +230,9 @@ for (i_x,x) in enumerate(x_ax)
             y3 = Nodes[node_3,3]
             if judge_point_inside_triangle(x1,y1,x2,y2,x3,y3,x,y)
                 St = ( x2*y3 + x3*y1 + x1*y2 - x2*y1 - x1*y3 - x3*y2 )/2
-                S1 = ( x3*yp + xp*y2 + x2*y3 - x3*y2 - x2*yp - xp*y3 )/2
-                S2 = ( x1*yp + xp*y3 + x3*y1 - x1*y3 - x3*yp - xp*y1 )/2
+                # S1 = ( x3*y  +  x*y2 + x2*y3 - x3*y2 - x2*y  -  x*y3 )/2
+                S2 = ( x1*y  +  x*y3 + x3*y1 - x1*y3 - x3*y  -  x*y1 )/2
+                S3 = ( x2*y  +  x*y1 + x1*y2 - x2*y1 - x1*y  -  x*y2 )/2
                 ξ = S2/St
                 η = S3/St
                 Nb = zeros(6)
@@ -268,10 +269,11 @@ fig_ux = plot(size = (600,350),
               frame_style = :box,
               tickfontsize = 10,
               aspect_ratio = :equal)
-heatmap(transpose(ux_mat), c = :jet, aspect_ratio = :equal, clim = (-5e-3,5e-3))
+heatmap!(fig_ux, transpose(ux_mat),
+         c = :jet, aspect_ratio = :equal,
+         clim = (-1e-10,1e-10))
+title!("t = 150 μs", titlefontsize = 10)
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_field_200.png")
 
-# contour(transpose(ux_mat),
-#         level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-5e-3,5e-3))
-test = rand(8,20)
-nodes = ([x^2 for x = 1:8], [0.2y for y = 1:20])
-itp = interpolate(nodes, A, Gridded(Linear()))
+contour(transpose(ux_mat),
+        level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-1e-3,1e-3))
