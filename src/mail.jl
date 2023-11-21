@@ -11,7 +11,7 @@ using Printf
 
 file = matopen("/Users/songhan.zhang/Documents/MATLAB/2023-QuadraticTriangle/model.mat")
 Nodes_import = read(file, "Nodes")
-n_nodes = size(Nodes,1)
+n_nodes = size(Nodes_import,1)
 Elements_import = read(file, "Elements")
 n_elements = size(Elements_import,1)
 
@@ -59,6 +59,7 @@ for i_e = 1:n_elements
           w = 1.0, color = :dodgerblue, linestyle = :solid)
 end
 plot!()
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
 
 # %% Excitation source
 # node 137 (0.0, 0.3)
@@ -76,15 +77,16 @@ for ii = T_0 : T_0 + n_steps
     Fg[tar_DOF,ii] = (100*(1-cos(2*pi*ctf*(ii-T_0)*ΔT/n_peaks))*sin(2*pi*ctf*(ii-T_0)*ΔT))*cos(theta)
 end
 
-fig_F = plot(size = (560,200),
+fig_F = plot(size = (560,300),
               legend = false,
               grid = false,
               frame_style = :box,
               tickfontsize = 10)
-plot!(fig_F, Time_label*1e6, Fg[tar_DOF_y,:], label = "",
+plot!(fig_F, Time_label*1e6, Fg[tar_DOF,:], label = "",
       color = :black, w = 1, linestyle = :solid)
 xlabel!(fig_F, "Time (μs)", guidefontsize = 10)
 ylabel!(fig_F, "Force (N)")
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
 
 # %% Solve - direct time integral
 Ug = zeros(n_DOF,length(Time_label))
@@ -188,7 +190,7 @@ gif(
 )
 
 
-i_t = 2000
+i_t = 2300
 u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
 x_ax = 0:0.005:1
