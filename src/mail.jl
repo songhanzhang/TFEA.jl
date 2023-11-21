@@ -86,7 +86,7 @@ plot!(fig_F, Time_label*1e6, Fg[tar_DOF,:], label = "",
       color = :black, w = 1, linestyle = :solid)
 xlabel!(fig_F, "Time (μs)", guidefontsize = 10)
 ylabel!(fig_F, "Force (N)")
-savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/excitation.pdf")
 
 # %% Solve - direct time integral
 Ug = zeros(n_DOF,length(Time_label))
