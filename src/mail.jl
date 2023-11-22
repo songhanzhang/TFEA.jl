@@ -8,6 +8,7 @@ using LinearAlgebra
 using SparseArrays
 using Plots
 using Printf
+using Measures
 
 file = matopen("/Users/songhan.zhang/Documents/MATLAB/2023-QuadraticTriangle/model.mat")
 Nodes_import = read(file, "Nodes")
@@ -104,6 +105,24 @@ end
 
 plot(Time_label, Ug[(7792-1)*2+1,:])
 plot!(Time_label, Ug[(137-1)*2+1,:])
+u_sel_1 = Ug[(137-1)*2+1,:]*1e9
+u_sel_2 = Ug[(7792-1)*2+1,:]*1e9
+t_ax = Time_label[:,:]
+
+fig_u_sel = plot(
+    size = (600,300),
+    dpi = 300,
+    legend = false,
+    grid = false,
+    frame_style = :box,
+    tickfontsize = 10
+)
+plot!(t_ax*1e6, u_sel_1, w = 1.5, color = :pink1)
+plot!(t_ax*1e6, u_sel_2, w = 1.5, color = :dodgerblue)
+xlabel!("Time (μs)")
+ylabel!("Displacement (μm)")
+plot!(bottom_margin = 3mm)
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ut.pdf")
 
 # %% Plot wave field
 ani = @animate for i_t = 20:20:2000
@@ -193,8 +212,8 @@ gif(
 i_t = 2300
 u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
-x_ax = 0:0.005:1
-y_ax = 0:0.005:0.6
+x_ax = 0:0.002:1
+y_ax = 0:0.002:0.6
 
 ux_mat = zeros(length(x_ax),length(y_ax))
 
@@ -264,18 +283,21 @@ for (i_x,x) in enumerate(x_ax)
         end
     end
 end
-fig_ux = plot(size = (600,350),
+fig_ux = plot(size = (600,380),
               dpi = 600,
               legend = false,
               grid = false,
               frame_style = :box,
               tickfontsize = 10,
               aspect_ratio = :equal)
-heatmap!(fig_ux, transpose(ux_mat),
-         c = :jet, aspect_ratio = :equal,
-         clim = (-1e-10,1e-10))
-title!("t = 150 μs", titlefontsize = 10)
-savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_field_200.png")
+heatmap!(fig_ux, x_ax, y_ax, transpose(ux_mat),
+         c = :balance, aspect_ratio = :equal,
+         clim = (-2e-10,2e-10),
+         xlims = (0,1), ylims = (0,0.6))
+title!("t = 230 μs", titlefontsize = 10)
+xlabel!("x (m)")
+ylabel!("y (m)")
+savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_field_230.png")
 
 contour(transpose(ux_mat),
         level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-1e-3,1e-3))
