@@ -264,12 +264,6 @@ for (i_x,x) in enumerate(x_ax)
                 Nb[4] = 4*ξ*(1-ξ-η)
                 Nb[5] = 4*ξ*η
                 Nb[6] = 4*η*(1-ξ-η)
-                # DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
-                # DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
-                # DOF_5  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
-                # DOF_7  = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
-                # DOF_9  = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
-                # DOF_11 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
                 DOF_1 = (node_1-1)*2 + 1
                 DOF_2 = (node_2-1)*2 + 1
                 DOF_3 = (node_3-1)*2 + 1
@@ -293,8 +287,9 @@ ani = @animate for i_t = 1:1:101
                   frame_style = :box,
                   tickfontsize = 10,
                   aspect_ratio = :equal)
-    heatmap!(transpose(ux_mat[:,:,i_t]), c = :balance, aspect_ratio = :equal, clim = (-2e-10,2e-10))
-    title_content = @sprintf "t = %0.2f μs" Time_label[i_t]*1e6
+    heatmap!(transpose(ux_mat[:,:,i_t]),
+             c = :balance, aspect_ratio = :equal, clim = (-2e-10,2e-10))
+    title_content = @sprintf "t = %0.2f μs" t_ax[i_t]*1e6
     title!(title_content, titlefont = 10)
 end
 gif(
