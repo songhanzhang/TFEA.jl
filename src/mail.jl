@@ -215,7 +215,8 @@ u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 x_ax = 0:0.002:1
 y_ax = 0:0.002:0.6
 
-ux_mat = zeros(length(x_ax),length(y_ax))
+t_ax = Time_label[30:30:3000]
+ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))
 
 for (i_x,x) in enumerate(x_ax)
 
@@ -233,7 +234,7 @@ for (i_x,x) in enumerate(x_ax)
             end
         end
         if minimum(dist) < 0.02
-            ux_mat[i_x,i_y] = NaN
+            ux_mat[i_x,i_y,:] *= NaN
             continue
         end
         for i_e = 1:n_elements
@@ -276,13 +277,32 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,i_t]
-                ux_mat[i_x,i_y] = transpose(Nb)*Ue
+                Ue = Ug[DOFs,30:30:3000]
+                ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
                 continue
             end
         end
     end
 end
+
+ani = @animate for i_t = 1:1:101
+    fig_ux = plot(size = (600,350),
+                  dpi = 300,
+                  legend = false,
+                  grid = false,
+                  frame_style = :box,
+                  tickfontsize = 10,
+                  aspect_ratio = :equal)
+    heatmap!(transpose(ux_mat[:,:,i_t]), c = :balance, aspect_ratio = :equal, clim = (-2e-10,2e-10))
+    title_content = @sprintf "t = %0.2f μs" Time_label[i_t]*1e6
+    title!(title_content, titlefont = 10)
+end
+gif(
+    ani,
+    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani.gif",
+    fps=20
+)
+
 fig_ux = plot(size = (600,380),
               dpi = 600,
               legend = false,
