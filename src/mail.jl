@@ -279,7 +279,7 @@ for (i_x,x) in enumerate(x_ax)
     end
 end
 
-ani = @animate for i_t = 1:1:101
+ani = @animate for i_t = 1:1:100
     fig_ux = plot(size = (600,350),
                   dpi = 300,
                   legend = false,
