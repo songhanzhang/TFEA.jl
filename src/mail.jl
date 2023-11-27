@@ -215,7 +215,7 @@ u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 x_ax = 0:0.002:1
 y_ax = 0:0.002:0.6
 
-t_ax = Time_label[10:10:5000]
+t_ax = Time_label[10:10:10000]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))
 
 for (i_x,x) in enumerate(x_ax)
@@ -271,7 +271,7 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,10:10:5000]
+                Ue = Ug[DOFs,10:10:10000]
                 ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
                 continue
             end
