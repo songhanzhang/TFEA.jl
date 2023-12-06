@@ -30,8 +30,11 @@ Reals = [ 1  (1) ]
 
 (n_DOF, list_DOF) = cal_list_DOF(n_nodes, [1,2])
 
-(Kg, Mg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
-Cg = spzeros(n_DOF,n_DOF)
+# (Kg, Mg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
+# Cg = spzeros(n_DOF,n_DOF)
+
+(Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
+                      Nodes_a = [], pml_interface = [ 0 0.8 0.05 0.55 ], model_boundary = [ 0 1 0 0.6 ], eta_max = 500e3)
 
 plot_model = plot(
     size = (560,400),
@@ -64,7 +67,7 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pd
 
 # %% Excitation source
 # node 137 (0.0, 0.3)
-Time_label = 0:2e-7:2.0e-3
+Time_label = 0:2e-7:0.5e-3
 Ns = length(Time_label)
 ΔT = Time_label[2] - Time_label[1]
 ctf = 60e3
@@ -214,9 +217,7 @@ u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
 x_ax = 0:0.005:1
 y_ax = 0:0.005:0.6
-
-# t_ax = Time_label[10:10:10000]
-t_ax = Time_label[50]
+t_ax = Time_label[10:10:10000]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))
 
 for (i_x,x) in enumerate(x_ax)
@@ -280,10 +281,9 @@ for (i_x,x) in enumerate(x_ax)
     end
 end
 
-x_ax = 0:0.002:1
-y_ax = 0:0.002:0.6
-# t_ax = Time_label[50:50:10000]
-t_ax = Time_label[50]
+x_ax = 0:0.005:1
+y_ax = 0:0.005:0.6
+t_ax = Time_label[10:10:2500]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))*NaN
 
 for (i_x,x) in enumerate(x_ax)
@@ -351,15 +351,15 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,50]
-                ux_mat[i_x,i_y,1] = transpose(Nb)*Ue
+                Ue = Ug[DOFs,10:10:2500]
+                ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
                 continue
             end
         end
     end
 end
 
-ani = @animate for i_t = 1:1:100
+ani = @animate for i_t = 1:1:250
     fig_ux = plot(size = (600,350),
                   dpi = 300,
                   legend = false,
@@ -368,7 +368,7 @@ ani = @animate for i_t = 1:1:100
                   tickfontsize = 10,
                   aspect_ratio = :equal)
     heatmap!(transpose(ux_mat[:,:,i_t]),
-             c = :balance, aspect_ratio = :equal, clim = (-2e-8,2e-8))
+             c = :balance, aspect_ratio = :equal, clim = (-2e-10,2e-10))
     title_content = @sprintf "t = %0.2f μs" t_ax[i_t]*1e6
     title!(title_content, titlefont = 10)
 end
