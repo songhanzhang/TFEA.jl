@@ -1,4 +1,4 @@
-function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type,pml_interface,model_boundary)
+function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type,pml_interface,model_boundary,eta_max)
 
     Gauss = [ 0.0915762135  0.8168475730  0.1099517437
               0.0915762135  0.0915762135  0.1099517437
@@ -21,6 +21,7 @@ function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type,pml_interface,model_bound
     end
     Ke = zeros(12,12)
     Me = zeros(12,12)
+    Ce = zeros(12,12)
     for i_Gauss = 1:6
         ξ = Gauss[i_Gauss,1]
         η = Gauss[i_Gauss,2]
@@ -65,11 +66,38 @@ function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type,pml_interface,model_bound
         N = kron(transpose(Nb), [ 1 0; 0 1 ])
         Ke += transpose(B)*D*B*det(J)*H
         Me += ρ*transpose(N)*N*det(J)*H
+        if !isempty(pml_interface)
+            x_gauss = transpose(Nb)*x
+            y_gauss = transpose(Nb)*y
+            # eta_pml = cal_pml_eta(pml_interface, model_boundary, x_gauss, y_gauss, eta_max)
+            x_Lb = pml_interface[1]
+            x_Rb = pml_interface[2]
+            y_Bb = pml_interface[3]
+            y_Tb = pml_interface[4]
+
+            x_min = model_boundary[1]
+            x_max = model_boundary[2]
+            y_min = model_boundary[3]
+            y_max = model_boundary[4]
+
+            if x_gauss < x_Lb
+                eta_pml = eta_max*((x_Lb-x_gauss)/(x_Lb-x_min))^3
+            elseif x_gauss > x_Rb
+                eta_pml = eta_max*((x_gauss-x_Rb)/(x_max-x_Rb))^3
+            elseif y_gauss < y_Bb
+                eta_pml = eta_max*((y_Bb-y_gauss)/(y_Bb-y_min))^3
+            elseif y_gauss > y_Tb
+                eta_pml = eta_max*((y_gauss-y_Tb)/(y_max-y_Tb))^3
+            else
+                eta_pml = 0.0
+            end
+            Ce += Me * eta_pml
+        end
         if det(J) < 0
             println("\nAttension: The determinate of the Jacobian is negative!")
         end
     end
 
-    return Ke, Me
+    return Ke, Me, Ce
 
 end
