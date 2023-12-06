@@ -281,8 +281,8 @@ for (i_x,x) in enumerate(x_ax)
     end
 end
 
-x_ax = 0:0.005:1
-y_ax = 0:0.005:0.6
+x_ax = 0:0.002:1
+y_ax = 0:0.002:0.6
 t_ax = Time_label[10:10:2500]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))*NaN
 
