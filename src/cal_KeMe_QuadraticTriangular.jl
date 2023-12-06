@@ -1,4 +1,4 @@
-function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type)
+function cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,type,pml_interface,model_boundary)
 
     Gauss = [ 0.0915762135  0.8168475730  0.1099517437
               0.0915762135  0.0915762135  0.1099517437
