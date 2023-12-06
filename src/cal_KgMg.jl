@@ -1,5 +1,5 @@
 function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
-                  Nodes_a = [], pml_interface = [], model_boundary = [])
+                  Nodes_a = [], pml_interface = [], model_boundary = [], eta_max = 0)
 
     println("\n")
     println("*** Kg and Mg evaluation started ...\n")
@@ -8,6 +8,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
     n_elements = size(Elements,1)
     Kg = spzeros(n_DOF,n_DOF)
     Mg = spzeros(n_DOF,n_DOF)
+    Cg = spzeros(n_DOF,n_DOF)
 
     for i_e = 1:n_elements
 
@@ -144,8 +145,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             y[5] = Nodes[node_5,3]
             x[6] = Nodes[node_6,2]
             y[6] = Nodes[node_6,3]
-            (Ke,Me) = cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,"PlaneStrain",
-                                                   pml_interface,model_boundary)
+            (Ke,Me,Ce) = cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,"PlaneStrain",pml_interface,model_boundary,eta_max)
             DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
             DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
             DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
@@ -161,6 +161,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6;DOF_7;DOF_8;DOF_9;DOF_10;DOF_11;DOF_12]
             Kg[DOFs,DOFs] += Ke
             Mg[DOFs,DOFs] += Me
+            Cg[DOFs,DOFs] += Ce
         elseif Elements[i_e,2] == "2D_Acoustics_4N"
             node_1 = Elements[i_e,5][1]
             node_2 = Elements[i_e,5][2]
@@ -191,6 +192,6 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
         end
     end
 
-    return Kg, Mg
+    return Kg, Mg, Cg
 
 end
