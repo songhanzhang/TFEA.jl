@@ -144,8 +144,8 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             y[5] = Nodes[node_5,3]
             x[6] = Nodes[node_6,2]
             y[6] = Nodes[node_6,3]
-            PlaneType = "PlaneStrain"
-            (Ke,Me) = cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,PlaneType)
+            (Ke,Me) = cal_KeMe_QuadraticTriangular(x,y,E,ν,ρ,"PlaneStrain",
+                                                   pml_interface,model_boundary)
             DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
             DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
             DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
