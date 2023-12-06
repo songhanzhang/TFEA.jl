@@ -64,10 +64,10 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pd
 
 # %% Excitation source
 # node 137 (0.0, 0.3)
-Time_label = 0:1e-7:1.0e-3
+Time_label = 0:2e-7:2.0e-3
 Ns = length(Time_label)
 ΔT = Time_label[2] - Time_label[1]
-ctf = 100e3
+ctf = 60e3
 n_peaks = 5
 n_steps = Int(floor(n_peaks/ctf/ΔT))
 tar_DOF = Int(findall(isequal(137.1),list_DOF[:,2])[1])
