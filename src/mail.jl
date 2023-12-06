@@ -396,3 +396,108 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_fie
 
 # contour(transpose(ux_mat),
 #         level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-1e-3,1e-3))
+
+
+f = 60e3
+ω = 2*pi*f
+Fg_hat = zeros(n_DOF,1)
+Fg_hat[tar_DOF,1] = 1
+Ug_hat = (-ω^2*Mg + 1im*ω*Cg + Kg)\Fg_hat
+x_ax = 0:0.003:1
+y_ax = 0:0.003:0.6
+ωt_ax = (1:1:20)/20*2*pi
+ux_hat_mat = zeros(length(x_ax),length(y_ax),length(ωt_ax))*NaN
+
+for (i_x,x) in enumerate(x_ax)
+
+    # if mod(i_x, 10) == 0
+    println("Progress: ", i_x/length(x_ax)*100, " %")
+    # end
+
+    for (i_y,y) in enumerate(y_ax)
+        dist = zeros(4,5)
+        for ii = 1:4
+            for jj = 1:5
+                x_central = 0.2 + (ii-1)*0.1
+                y_central = 0.1 + (jj-1)*0.1
+                dist[ii,jj] = norm([x-x_central, y-y_central])
+            end
+        end
+        if minimum(dist) < 0.02
+            continue
+        end
+        for i_e = 1:n_elements
+            node_1 = Int(Elements[i_e,5][1])
+            node_2 = Int(Elements[i_e,5][2])
+            node_3 = Int(Elements[i_e,5][3])
+            node_4 = Int(Elements[i_e,5][4])
+            node_5 = Int(Elements[i_e,5][5])
+            node_6 = Int(Elements[i_e,5][6])
+            x1 = Nodes[node_1,2]
+            y1 = Nodes[node_1,3]
+            x2 = Nodes[node_2,2]
+            y2 = Nodes[node_2,3]
+            x3 = Nodes[node_3,2]
+            y3 = Nodes[node_3,3]
+            x4 = Nodes[node_4,2]
+            y4 = Nodes[node_4,3]
+            x5 = Nodes[node_5,2]
+            y5 = Nodes[node_5,3]
+            x6 = Nodes[node_6,2]
+            y6 = Nodes[node_6,3]
+            a1 = x2*y3 - y2*x3
+            a2 = x3*y1 - y3*x1
+            a3 = x1*y2 - y1*x2
+            b1 = y2-y3
+            b2 = y3-y1
+            b3 = y1-y2
+            c1 = x3-x2
+            c2 = x1-x3
+            c3 = x2-x1
+            Δ = x2*y3 + x3*y1 + x1*y2 - x2*y1 - x1*y3 - x3*y2
+            L1 = (a1+b1*x+c1*y)/Δ
+            L2 = (a2+b2*x+c2*y)/Δ
+            L3 = (a3+b3*x+c3*y)/Δ
+            if minimum([ L1 L2 L3 ]) > -1e-9
+                Nb = zeros(6)
+                Nb[1] = (2*L1-1)*L1
+                Nb[2] = (2*L2-1)*L2
+                Nb[3] = (2*L3-1)*L3
+                Nb[4] = 4*L1*L2
+                Nb[5] = 4*L2*L3
+                Nb[6] = 4*L3*L1
+                DOF_1 = (node_1-1)*2 + 1
+                DOF_2 = (node_2-1)*2 + 1
+                DOF_3 = (node_3-1)*2 + 1
+                DOF_4 = (node_4-1)*2 + 1
+                DOF_5 = (node_5-1)*2 + 1
+                DOF_6 = (node_6-1)*2 + 1
+                DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
+                Ue_hat = Ug_hat[DOFs]
+                u_hat = transpose(Nb) * Ue_hat
+                for (i_ωt, ωt) in enumerate(ωt_ax)
+                    ux_hat_mat[i_x,i_y,i_ωt] = abs(u_hat)*cos(ωt+angle(u_hat))
+                end
+                continue
+            end
+        end
+    end
+end
+ani = @animate for i_ωt = 1:1:20
+    fig_ux = plot(size = (600,350),
+                  dpi = 300,
+                  legend = false,
+                  grid = false,
+                  frame_style = :box,
+                  tickfontsize = 10,
+                  aspect_ratio = :equal)
+    heatmap!(transpose(ux_hat_mat[:,:,i_ωt]),
+             c = :balance, aspect_ratio = :equal, clim = (-2e-12,2e-12))
+    title_content = @sprintf "f = 60 kHz"
+    title!(title_content, titlefont = 10)
+end
+gif(
+    ani,
+    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani_mode_60.gif",
+    fps=20
+)
