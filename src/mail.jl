@@ -336,7 +336,7 @@ for (i_x,x) in enumerate(x_ax)
             L1 = (a1+b1*x+c1*y)/Δ
             L2 = (a2+b2*x+c2*y)/Δ
             L3 = (a3+b3*x+c3*y)/Δ
-            if minimum([ L1 L2 L3 ]) > -1e9
+            if minimum([ L1 L2 L3 ]) > -1e-9
                 Nb = zeros(6)
                 Nb[1] = (2*L1-1)*L1
                 Nb[2] = (2*L2-1)*L2
