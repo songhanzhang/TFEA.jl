@@ -1,4 +1,5 @@
-function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
+function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
+                  Nodes_a = [], pml_interface = [], model_boundary = [])
 
     println("\n")
     println("*** Kg and Mg evaluation started ...\n")
