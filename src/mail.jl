@@ -212,10 +212,11 @@ gif(
 i_t = 2300
 u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
-x_ax = 0:0.002:1
-y_ax = 0:0.002:0.6
+x_ax = 0:0.005:1
+y_ax = 0:0.005:0.6
 
-t_ax = Time_label[10:10:10000]
+# t_ax = Time_label[10:10:10000]
+t_ax = Time_label[50]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))
 
 for (i_x,x) in enumerate(x_ax)
@@ -271,8 +272,8 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,10:10:10000]
-                ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
+                Ue = Ug[DOFs,50]
+                ux_mat[i_x,i_y,1] = transpose(Nb)*Ue
                 continue
             end
         end
@@ -281,7 +282,8 @@ end
 
 x_ax = 0:0.002:1
 y_ax = 0:0.002:0.6
-t_ax = Time_label[50:50:10000]
+# t_ax = Time_label[50:50:10000]
+t_ax = Time_label[50]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))*NaN
 
 for (i_x,x) in enumerate(x_ax)
@@ -349,8 +351,8 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,50:50:10000]
-                ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
+                Ue = Ug[DOFs,50]
+                ux_mat[i_x,i_y,1] = transpose(Nb)*Ue
                 continue
             end
         end
@@ -366,13 +368,13 @@ ani = @animate for i_t = 1:1:100
                   tickfontsize = 10,
                   aspect_ratio = :equal)
     heatmap!(transpose(ux_mat[:,:,i_t]),
-             c = :balance, aspect_ratio = :equal, clim = (-2e-10,2e-10))
+             c = :balance, aspect_ratio = :equal, clim = (-2e-8,2e-8))
     title_content = @sprintf "t = %0.2f μs" t_ax[i_t]*1e6
     title!(title_content, titlefont = 10)
 end
 gif(
     ani,
-    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani.gif",
+    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani2.gif",
     fps=20
 )
 
@@ -383,9 +385,9 @@ fig_ux = plot(size = (600,380),
               frame_style = :box,
               tickfontsize = 10,
               aspect_ratio = :equal)
-heatmap!(fig_ux, x_ax, y_ax, transpose(ux_mat),
+heatmap!(fig_ux, x_ax, y_ax, transpose(ux_mat[:,:,1]),
          c = :balance, aspect_ratio = :equal,
-         clim = (-2e-10,2e-10),
+         # clim = (-2e-10,2e-10),
          xlims = (0,1), ylims = (0,0.6))
 title!("t = 230 μs", titlefontsize = 10)
 xlabel!("x (m)")
