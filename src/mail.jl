@@ -279,6 +279,72 @@ for (i_x,x) in enumerate(x_ax)
     end
 end
 
+ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))*NaN
+
+for (i_x,x) in enumerate(x_ax)
+
+    if mod(i_x, Int(floor(length(x_ax)/100))) == 0
+        println("Progress: ", i_x/length(x_ax)*100, " %")
+    end
+
+    for (i_y,y) in enumerate(y_ax)
+        for i_e = 1:n_elements
+            node_1 = Int(Elements[i_e,5][1])
+            node_2 = Int(Elements[i_e,5][2])
+            node_3 = Int(Elements[i_e,5][3])
+            node_4 = Int(Elements[i_e,5][4])
+            node_5 = Int(Elements[i_e,5][5])
+            node_6 = Int(Elements[i_e,5][6])
+            x1 = Nodes[node_1,2]
+            y1 = Nodes[node_1,3]
+            x2 = Nodes[node_2,2]
+            y2 = Nodes[node_2,3]
+            x3 = Nodes[node_3,2]
+            y3 = Nodes[node_3,3]
+            x4 = Nodes[node_4,2]
+            y4 = Nodes[node_4,3]
+            x5 = Nodes[node_5,2]
+            y5 = Nodes[node_5,3]
+            x6 = Nodes[node_6,2]
+            y6 = Nodes[node_6,3]
+            a1 = x2*y3 - y2*x3
+            a2 = x3*y1 - y3*x1
+            a3 = x1*y2 - y1*x2
+            b1 = y2-y3
+            b2 = y3-y1
+            b3 = y1-y2
+            c1 = x3-x2
+            c2 = x1-x3
+            c3 = x2-x1
+            Δ = det([ 1  1  1
+                      x1 x2 x3
+                      y1 y2 y3 ])
+            L1 = (a1+b1*x+c1*y)/(Δ)
+            L2 = (a2+b2*x+c2*y)/(Δ)
+            L3 = (a3+b3*x+c3*y)/(Δ)
+            if minimum([ L1 L2 L3 ]) > 0
+                Nb = zeros(6)
+                Nb[1] = (2*L1-1)*L1
+                Nb[2] = (2*L2-1)*L2
+                Nb[3] = (2*L3-1)*L3
+                Nb[4] = 4*L1*L2
+                Nb[5] = 4*L2*L3
+                Nb[6] = 4*L3*L1
+                DOF_1 = (node_1-1)*2 + 1
+                DOF_2 = (node_2-1)*2 + 1
+                DOF_3 = (node_3-1)*2 + 1
+                DOF_4 = (node_4-1)*2 + 1
+                DOF_5 = (node_5-1)*2 + 1
+                DOF_6 = (node_6-1)*2 + 1
+                DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
+                Ue = Ug[DOFs,10:10:10000]
+                ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
+                continue
+            end
+        end
+    end
+end
+
 ani = @animate for i_t = 1:1:100
     fig_ux = plot(size = (600,350),
                   dpi = 300,
