@@ -279,13 +279,16 @@ for (i_x,x) in enumerate(x_ax)
     end
 end
 
+x_ax = 0:0.002:1
+y_ax = 0:0.002:0.6
+t_ax = Time_label[50:50:10000]
 ux_mat = zeros(length(x_ax),length(y_ax),length(t_ax))*NaN
 
 for (i_x,x) in enumerate(x_ax)
 
-    if mod(i_x, Int(floor(length(x_ax)/100))) == 0
-        println("Progress: ", i_x/length(x_ax)*100, " %")
-    end
+    # if mod(i_x, 10) == 0
+    println("Progress: ", i_x/length(x_ax)*100, " %")
+    # end
 
     for (i_y,y) in enumerate(y_ax)
         dist = zeros(4,5)
@@ -297,7 +300,6 @@ for (i_x,x) in enumerate(x_ax)
             end
         end
         if minimum(dist) < 0.02
-            ux_mat[i_x,i_y,:] *= NaN
             continue
         end
         for i_e = 1:n_elements
@@ -347,7 +349,7 @@ for (i_x,x) in enumerate(x_ax)
                 DOF_5 = (node_5-1)*2 + 1
                 DOF_6 = (node_6-1)*2 + 1
                 DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
-                Ue = Ug[DOFs,10:10:10000]
+                Ue = Ug[DOFs,50:50:10000]
                 ux_mat[i_x,i_y,:] = transpose(Nb)*Ue
                 continue
             end
