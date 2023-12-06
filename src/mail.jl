@@ -288,6 +288,18 @@ for (i_x,x) in enumerate(x_ax)
     end
 
     for (i_y,y) in enumerate(y_ax)
+        dist = zeros(4,5)
+        for ii = 1:4
+            for jj = 1:5
+                x_central = 0.2 + (ii-1)*0.1
+                y_central = 0.1 + (jj-1)*0.1
+                dist[ii,jj] = norm([x-x_central, y-y_central])
+            end
+        end
+        if minimum(dist) < 0.02
+            ux_mat[i_x,i_y,:] *= NaN
+            continue
+        end
         for i_e = 1:n_elements
             node_1 = Int(Elements[i_e,5][1])
             node_2 = Int(Elements[i_e,5][2])
@@ -316,13 +328,11 @@ for (i_x,x) in enumerate(x_ax)
             c1 = x3-x2
             c2 = x1-x3
             c3 = x2-x1
-            Δ = det([ 1  1  1
-                      x1 x2 x3
-                      y1 y2 y3 ])
-            L1 = (a1+b1*x+c1*y)/(Δ)
-            L2 = (a2+b2*x+c2*y)/(Δ)
-            L3 = (a3+b3*x+c3*y)/(Δ)
-            if minimum([ L1 L2 L3 ]) > 0
+            Δ = x2*y3 + x3*y1 + x1*y2 - x2*y1 - x1*y3 - x3*y2
+            L1 = (a1+b1*x+c1*y)/Δ
+            L2 = (a2+b2*x+c2*y)/Δ
+            L3 = (a3+b3*x+c3*y)/Δ
+            if minimum([ L1 L2 L3 ]) > -1e9
                 Nb = zeros(6)
                 Nb[1] = (2*L1-1)*L1
                 Nb[2] = (2*L2-1)*L2
