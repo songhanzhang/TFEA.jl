@@ -495,6 +495,7 @@ ani = @animate for i_ωt = 1:1:20
              c = :balance, aspect_ratio = :equal, clim = (-2e-12,2e-12))
     title_content = @sprintf "f = 60 kHz"
     title!(title_content, titlefont = 10)
+    plot!(axis = false, xticks = false, yticks = false)
 end
 gif(
     ani,
