@@ -20,7 +20,7 @@ Nodes = [ 1:1:n_nodes  Nodes_import ]
 Elements = Array{Any,2}(undef,n_elements,5)
 for i_e = 1:n_elements
     Elements[i_e,1] = i_e
-    Elements[i_e,2] = "2D_QuadraticTriangle"
+    Elements[i_e,2] = "2D_QuadTriangle"
     Elements[i_e,3] = 1
     Elements[i_e,4] = 1
     Elements[i_e,5] = Elements_import[i_e,:]
@@ -45,23 +45,8 @@ plot_model = plot(
     aspect_ratio = :equal,
     tickfontsize = 10
 )
-for i_e = 1:n_elements
-    node_1 = Int(Elements[i_e,5][1])
-    node_2 = Int(Elements[i_e,5][2])
-    node_3 = Int(Elements[i_e,5][3])
-    x = zeros(4)
-    y = zeros(4)
-    x[1] = Nodes[node_1,2]
-    y[1] = Nodes[node_1,3]
-    x[2] = Nodes[node_2,2]
-    y[2] = Nodes[node_2,3]
-    x[3] = Nodes[node_3,2]
-    y[3] = Nodes[node_3,3]
-    x[4] = Nodes[node_1,2]
-    y[4] = Nodes[node_1,3]
-    plot!(x,y,label = "",
-          w = 1.0, color = :dodgerblue, linestyle = :solid)
-end
+plot_model_elements(Nodes, Elements)
+plot_model_nodes(Nodes)
 plot!()
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
 
