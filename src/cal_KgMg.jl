@@ -118,7 +118,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                 end
             end
             Kg[DOFs,DOFs] += Ke
-        elseif Elements[i_e,2] == "2D_QuadraticTriangle"
+        elseif Elements[i_e,2] == "2D_QuadTriangle"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
