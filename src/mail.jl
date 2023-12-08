@@ -46,7 +46,7 @@ plot_model = plot(
     tickfontsize = 10
 )
 plot_model_elements(Nodes, Elements)
-plot_model_nodes(Nodes)
+plot_model_nodes(Nodes, node_size = 5)
 plot!()
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
 
