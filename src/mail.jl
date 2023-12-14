@@ -75,18 +75,7 @@ ylabel!(fig_F, "Force (N)")
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/excitation.pdf")
 
 # %% Solve - direct time integral
-Ug = zeros(n_DOF,length(Time_label))
-Ug_0 = zeros(n_DOF,1)
-Ug_t_0 = zeros(n_DOF,1)
-Ug_tt_0 = zeros(n_DOF,1)
-for i_t = 3:length(Time_label)
-    if mod(i_t,10) == 0
-        @printf "%.3f%% completed ... \n" i_t/Ns*100
-    end
-        K_eq = Mg/ΔT^2 + Cg/(2*ΔT)
-        F_eq = Fg[:,i_t-1] + (2*Mg/ΔT^2-Kg)*Ug[:,i_t-1] - (Mg/ΔT^2-Cg/(2*ΔT))*Ug[:,i_t-2]
-        Ug[:,i_t] = K_eq\F_eq
-end
+Ug = sol_CDM(Mg,Cg,Kg,Fg,t_ax)
 
 plot(Time_label, Ug[(7792-1)*2+1,:])
 plot!(Time_label, Ug[(137-1)*2+1,:])
