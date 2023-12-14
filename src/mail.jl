@@ -376,9 +376,6 @@ xlabel!("x (m)")
 ylabel!("y (m)")
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_field_230.png")
 
-# contour(transpose(ux_mat),
-#         level = 1600, linewidth = 0, fillrange = true, c = :jet, aspect_ratio = :equal, clim = (-1e-3,1e-3))
-
 
 f = 60e3
 ω = 2*pi*f
