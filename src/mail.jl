@@ -30,9 +30,6 @@ Reals = [ 1  (1) ]
 
 (n_DOF, list_DOF) = cal_list_DOF(n_nodes, [1,2])
 
-# (Kg, Mg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF; Nodes_a = [])
-# Cg = spzeros(n_DOF,n_DOF)
-
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                       Nodes_a = [], pml_interface = [ 0 0.8 0.05 0.55 ], model_boundary = [ 0 1 0 0.6 ], eta_max = 500e3)
 
