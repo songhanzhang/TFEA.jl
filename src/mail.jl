@@ -25,13 +25,15 @@ for i_e = 1:n_elements
     Elements[i_e,4] = 1
     Elements[i_e,5] = Elements_import[i_e,:]
 end
+pml_interface = [ 0 0.8 0.05 0.55 ]
+model_boundary = [ 0 1 0 0.6 ]
 Materials = [ 1  (2e11, 7850, 0.3) ]
 Reals = [ 1  (1) ]
 
 (n_DOF, list_DOF) = cal_list_DOF(n_nodes, [1,2])
 
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
-                      Nodes_a = [], pml_interface = [ 0 0.8 0.05 0.55 ], model_boundary = [ 0 1 0 0.6 ], eta_max = 500e3)
+                      Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
 
 plot_model = plot(
     size = (560,400),
