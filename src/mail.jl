@@ -50,7 +50,6 @@ plot!()
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
 
 # %% Excitation source
-# node 137 (0.0, 0.3)
 Time_label = 0:2e-7:0.5e-3
 Ns = length(Time_label)
 ΔT = Time_label[2] - Time_label[1]
