@@ -100,7 +100,6 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ut.pdf")
 
 # %% Plot wave field
 ani = @animate for i_t = 20:20:2000
-# for i_t = 50:50:10000
     println("i_t = ", i_t)
     u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
