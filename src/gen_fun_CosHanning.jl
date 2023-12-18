@@ -1,4 +1,4 @@
-function y = gen_fun_CosHanning(t_ax,fc,n_peaks)
+function gen_fun_CosHanning(t_ax,fc,n_peaks)
 
     Ns = length(t_ax)
     ΔT = t_ax[2] - t_ax[1]
@@ -9,6 +9,6 @@ function y = gen_fun_CosHanning(t_ax,fc,n_peaks)
         y[ii] = (1-cos(2*pi*fc*(ii-T_0)*ΔT/n_peaks))*sin(2*pi*fc*(ii-T_0)*ΔT)
     end
 
-    return
+    return y
 
 end
