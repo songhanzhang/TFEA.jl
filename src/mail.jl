@@ -51,11 +51,8 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pd
 
 # %% Excitation source
 Time_label = 0:2e-7:0.5e-3
-Ns = length(Time_label)
-ΔT = Time_label[2] - Time_label[1]
 ctf = 60e3
 n_peaks = 5
-n_steps = Int(floor(n_peaks/ctf/ΔT))
 tar_DOF = Int(findall(isequal(137.1),list_DOF[:,2])[1])
 theta = 0.0
 Fg = zeros(n_DOF,length(Time_label))
@@ -63,6 +60,9 @@ T_0 = 11
 for ii = T_0 : T_0 + n_steps
     Fg[tar_DOF,ii] = (100*(1-cos(2*pi*ctf*(ii-T_0)*ΔT/n_peaks))*sin(2*pi*ctf*(ii-T_0)*ΔT))*cos(theta)
 end
+
+Fg = zeros(n_DOF,length(Time_label))
+Fg[tar_DOF,:] = gen_fun_CosHanning(Time_label,ctf,n_peaks)
 
 fig_F = plot(size = (560,300),
               legend = false,
