@@ -78,8 +78,6 @@ savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/excitati
 # %% Solve - direct time integral
 Ug = sol_CDM(Mg,Cg,Kg,Fg,t_ax)
 
-plot(Time_label, Ug[(7792-1)*2+1,:])
-plot!(Time_label, Ug[(137-1)*2+1,:])
 u_sel_1 = Ug[(137-1)*2+1,:]*1e9
 u_sel_2 = Ug[(7792-1)*2+1,:]*1e9
 t_ax = Time_label[:,:]
