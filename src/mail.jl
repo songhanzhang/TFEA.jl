@@ -175,7 +175,7 @@ gif(
 
 
 i_t = 2300
-# u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
+u_xy = transpose(reshape(Ug[:,i_t],2,n_nodes))
 
 x_ax = 0:0.005:1
 y_ax = 0:0.005:0.6
