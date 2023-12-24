@@ -77,7 +77,7 @@ t_ax = Time_label[:,:]
 
 fig_u_sel = plot(
     size = (600,300),
-    dpi = 300,
+    dpi = 900,
     legend = false,
     grid = false,
     frame_style = :box,
