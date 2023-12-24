@@ -58,10 +58,10 @@ Fg = zeros(n_DOF,length(Time_label))
 Fg[tar_DOF,:] = gen_fun_CosHanning(Time_label,ctf,n_peaks,11)
 
 fig_F = plot(size = (560,300),
-              legend = false,
-              grid = false,
-              frame_style = :box,
-              tickfontsize = 10)
+             legend = false,
+             grid = false,
+             frame_style = :box,
+             tickfontsize = 10)
 plot!(fig_F, Time_label*1e6, Fg[tar_DOF,:], label = "",
       color = :black, w = 1, linestyle = :solid)
 xlabel!(fig_F, "Time (μs)", guidefontsize = 10)
