@@ -12,7 +12,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
 
     for i_e = 1:n_elements
 
-        if mod(i_e, Int(floor(n_elements/10))) == 0
+        if mod(i_e, Int(floor(n_elements/1))) == 0
             println("Progress ", i_e/n_elements*100, " %")
         end
 
@@ -41,8 +41,9 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
             A = Reals[i_real,2][1]
-            Izz = Real[i_real,2][4]
+            Izz = Reals[i_real,2][4]
             i_node = Elements[i_e,5][1]
             j_node = Elements[i_e,5][2]
             xi = Nodes[i_node,2]
@@ -50,9 +51,10 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             xj = Nodes[j_node,2]
             yj = Nodes[j_node,3]
             Le = sqrt((xj-xi)^2 + (yj-yi)^2)
-            Ke_bar = cal_Ke_bar_2DEulerBeam(Le,E,A,Izz)
+            (Ke_bar,Me_bar) = cal_KeMe_bar_2DEulerBeam(Le,E,ρ,A,Izz)
             Te = cal_Te_2DBeam(xi,yi,xj,yj)
             Ke = transpose(Te) * Ke_bar * Te
+            Me = transpose(Te) * Me_bar * Te
             DOF_1 = findall(isequal(i_node + 0.1),list_DOF[:,2])[1]
             DOF_2 = findall(isequal(i_node + 0.2),list_DOF[:,2])[1]
             DOF_3 = findall(isequal(i_node + 0.6),list_DOF[:,2])[1]
@@ -61,6 +63,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             DOF_6 = findall(isequal(j_node + 0.6),list_DOF[:,2])[1]
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6]
             Kg[DOFs,DOFs] += Ke
+            Mg[DOFs,DOFs] += Me
         elseif Elements[i_e,2] == "3D_Euler_Beam"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
