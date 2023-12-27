@@ -43,3 +43,66 @@ DOF_slave  = 7
 relation = exp(1im*kx*2)
 P = P[:,setdiff(1:n_DOF,DOF_slave)]
 P[DOF_slave,DOF_master] = relation
+
+Kg_bc = P'*Kg*P
+Mg_bc = P'*Mg*P
+
+(λ,Φ) = eigen(Kg_bc,Mg_bc)
+
+k_ax = zeros(3000,2)
+for ii = 1:1000
+    k_ax[ii,1] = ii/1000*2*pi
+    k_ax[ii,2] = 0
+end
+for ii = 1001:2000
+    k_ax[ii,1] = 2*pi
+    k_ax[ii,2] = (ii-1000)/1000*2*pi
+end
+for ii = 3000:-1:2001
+    k_ax[ii,1] = (ii-2000)/1000*2*pi
+    k_ax[ii,2] = (ii-2000)/1000*2*pi
+end
+
+ω_save = zeros(9,3000)*0im
+for ii = 1:3000
+
+    kx = k_ax[ii,1]
+    ky = k_ax[ii,2]
+
+    P = zeros(15,15)*0im
+    for ii = 1:15
+        P[ii,ii] = 1
+    end
+    DOF_master = [1,2,3,10,11,12]
+    DOF_slave  = [7,8,9,13,14,15]
+    relation = [exp(1im*kx*2),exp(1im*kx*2),exp(1im*kx*2),exp(1im*ky*2),exp(1im*ky*2),exp(1im*ky*2)]
+    for jj = 1:6
+        P[DOF_slave[jj],DOF_master[jj]] = relation[jj]
+    end
+
+    P = P[:,setdiff(1:n_DOF,DOF_slave)]
+
+    Kg_bc = P'*Kg*P
+    Mg_bc = P'*Mg*P
+
+    (λ,Φ) = eigen(Kg_bc,Mg_bc)
+    ω_save[:,ii] = sqrt.(Complex.(λ))
+end
+
+
+
+
+
+
+P = zeros(15,15)*0im
+for ii = 1:15
+    P[ii,ii] = 1
+end
+DOF_master = [1,2,3,10,11,12]
+DOF_slave  = [7,8,9,13,14,15]
+relation = [exp(1im*kx*2),exp(1im*kx*2),exp(1im*kx*2),exp(1im*ky*2),exp(1im*ky*2),exp(1im*ky*2)]
+P = P[:,setdiff(1:n_DOF,DOF_slave)]
+for ii = 1:6
+    P[DOF_slave[ii],DOF_master[ii]] = relation[ii]
+end
+P = P[:,setdiff(1:n_DOF,DOF_slave)]
