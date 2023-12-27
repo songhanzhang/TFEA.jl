@@ -88,12 +88,29 @@ for ii = 1:3000
     (λ,Φ) = eigen(Kg_bc,Mg_bc)
     ω_save[:,ii] = sqrt.(Complex.(λ))
 end
+ω_save = real(ω_save)
 
-
-
-
-
-
+fig_kw = plot(
+    size = (600,1000),
+    dpi = 900,
+    legend = false,
+    grid = false,
+    frame_style = :box,
+    tickfontsize = 10
+)
+for ii = 1:9
+    scatter!(
+        ω_save[ii,:]/1e3, label = "",
+        color = :dodgerblue, markerstrokecolor = :dodgerblue, markersize = 1
+)
+end
+plot!(left_margin = 6mm)
+plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
+plot!(Shape([0,3000,3000,0],
+      [6.5,6.5,8.7,8.7]), label = "",
+      color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
+xlabel!("Wavevector")
+ylabel!("ω (kHz)")
 P = zeros(15,15)*0im
 for ii = 1:15
     P[ii,ii] = 1
