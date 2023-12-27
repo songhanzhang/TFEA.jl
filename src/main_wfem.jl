@@ -32,7 +32,14 @@ Reals = [ 1  (1, 1, 1, 1/64*pi*0.01^4) ]
 
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF)
 
-P = zeros(15,15)
+kx = 2
+ky = 0
+P = zeros(15,15)*0im
 for ii = 1:15
     P[ii,ii] = 1
 end
+DOF_master = 1
+DOF_slave  = 7
+relation = exp(1im*kx*2)
+P = P[:,setdiff(1:n_DOF,DOF_slave)]
+P[DOF_slave,DOF_master] = relation
