@@ -100,17 +100,18 @@ fig_kw = plot(
 )
 for ii = 1:9
     scatter!(
-        ω_save[ii,:]/1e3, label = "",
+        ω_save[ii,:], label = "",
         color = :dodgerblue, markerstrokecolor = :dodgerblue, markersize = 1
 )
 end
 plot!(left_margin = 6mm)
 plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
-plot!(Shape([0,3000,3000,0],
-      [6.5,6.5,8.7,8.7]), label = "",
-      color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
+# plot!(Shape([0,3000,3000,0],
+#       [6.5,6.5,8.7,8.7]), label = "",
+#       color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
 xlabel!("Wavevector")
-ylabel!("ω (kHz)")
+ylabel!("ω (Hz)")
+plot!(ylims = (0,6))
 P = zeros(15,15)*0im
 for ii = 1:15
     P[ii,ii] = 1
