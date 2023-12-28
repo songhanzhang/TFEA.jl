@@ -67,7 +67,11 @@ function plot_model_elements(Nodes, Elements)
                 x_profile[i_interp] = transpose(Nb)*x
                 y_profile[i_interp] = transpose(Nb)*y
             end
-            plot!(Shape(x_profile,y_profile), color = :gray90, linewidth = 1)
+            if Elements[i_e,3] == 1
+                plot!(Shape(x_profile,y_profile), color = :gray90, linewidth = 1)
+            else
+                plot!(Shape(x_profile,y_profile), color = :pink, linewidth = 1)
+            end
         end
     end
 end
