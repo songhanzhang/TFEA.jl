@@ -64,8 +64,8 @@ function cal_KeMe_QuadTriangle(x,y,E,ν,ρ,type,pml_interface,model_boundary,eta
               0 dN_dy[1] 0 dN_dy[2] 0 dN_dy[3] 0 dN_dy[4] 0 dN_dy[5] 0 dN_dy[6]
               dN_dy[1] dN_dx[1] dN_dy[2] dN_dx[2] dN_dy[3] dN_dx[3] dN_dy[4] dN_dx[4] dN_dy[5] dN_dx[5] dN_dy[6] dN_dx[6] ]
         N = kron(transpose(Nb), [ 1 0; 0 1 ])
-        Ke += transpose(B)*D*B*det(J)*H
-        Me += ρ*transpose(N)*N*det(J)*H
+        Ke += transpose(B)*D*B*abs(det(J))*H
+        Me += ρ*transpose(N)*N*abs(det(J))*H
         if !isempty(pml_interface)
             x_gauss = transpose(Nb)*x
             y_gauss = transpose(Nb)*y
