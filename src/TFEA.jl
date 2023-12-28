@@ -1,7 +1,7 @@
 # module TFEA
 include("cal_Ke_2D_LGL_36.jl")
 include("cal_Ke_bar_2DBar.jl")
-include("cal_Ke_bar_2DEulerBeam.jl")
+include("cal_KeMe_bar_2DEulerBeam.jl")
 include("cal_Ke_bar_3DEulerBeam.jl")
 include("cal_KeMe_QuadTriangle.jl")
 include("cal_Kg.jl")
