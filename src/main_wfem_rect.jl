@@ -104,6 +104,9 @@ for ii = 2001:3000
     k_ax[ii,2] = (3001-ii)/1000*pi/0.01
 end
 
+a = 0.01
+s_ax = range(0, stop = (2+sqrt(2))*pi/a)
+
 ω_save = zeros(n_DOF-13*2,3000)*0im
 for ii = 1:3000
 
