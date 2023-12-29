@@ -107,7 +107,7 @@ end
 a = 0.01
 s_ax = range(0, stop = (2+sqrt(2))*pi/a, length = 5000)
 k_ax = zeros(length(s_ax),2)
-for (s,i_s) in enumerate(s_ax)
+for (i_s,s) in enumerate(s_ax)
     if s < pi/a
         k_ax[i_s,1] = s
         k_ax[i_s,2] = 0
@@ -117,6 +117,7 @@ for (s,i_s) in enumerate(s_ax)
     elseif s >= 2*pi/a && s < (2+sqrt(2))*pi/a
         k_ax[i_s,1] = pi/a - (s-2*pi/a)/sqrt(2)
         k_ax[i_s,2] = pi/a - (s-2*pi/a)/sqrt(2)
+    end
 end
 
 ω_save = zeros(n_DOF-13*2,3000)*0im
@@ -169,11 +170,12 @@ fig_kw = plot(
 color_ax = [:dodgerblue,:green3,:firebrick,:blue,:pink,:gray,:hotpink1,:orange]
 for ii = 1:8
     scatter!(
-        ω_save[ii,:]/2/pi/1e3, label = "",
+        s_ax, ω_save[ii,:]/2/pi/1e3, label = "",
         color = color_ax[ii], markerstrokecolor = color_ax[ii], markersize = 1
 )
 end
-plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
+# plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
+plot!(xticks = ([0,pi/a,2*pi/a,(2+sqrt(2))*pi/a],["O","Γ","M","K"]))
 plot!(Shape([0,3000,3000,0],
       [64,64,77,77]), label = "",
       color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
