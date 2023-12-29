@@ -120,8 +120,8 @@ for (i_s,s) in enumerate(s_ax)
     end
 end
 
-ω_save = zeros(n_DOF-13*2,3000)*0im
-for ii = 1:3000
+ω_save = zeros(n_DOF-13*2,5000)*0im
+for ii = 1:5000
 
     kx = k_ax[ii,1]
     ky = k_ax[ii,2]
@@ -155,7 +155,7 @@ for ii = 1:3000
     ω_save[:,ii] = sqrt.(Complex.(λ))
 end
 ω_save = real(ω_save)
-for ii = 1:3000
+for ii = 1:5000
     ω_save[:,ii] = sort(ω_save[:,ii])
 end
 
@@ -176,7 +176,7 @@ for ii = 1:8
 end
 # plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
 plot!(xticks = ([0,pi/a,2*pi/a,(2+sqrt(2))*pi/a],["O","Γ","M","K"]))
-plot!(Shape([0,3000,3000,0],
+plot!(Shape([0,s_ax[end],s_ax[end],0],
       [64,64,77,77]), label = "",
       color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
 xlabel!("Wavevector")
