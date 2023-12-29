@@ -107,7 +107,17 @@ end
 a = 0.01
 s_ax = range(0, stop = (2+sqrt(2))*pi/a, length = 5000)
 k_ax = zeros(length(s_ax),2)
-
+for (s,i_s) in enumerate(s_ax)
+    if s < pi/a
+        k_ax[i_s,1] = s
+        k_ax[i_s,2] = 0
+    elseif s >= pi/a && s < 2*pi/a
+        k_ax[i_s,1] = pi/a
+        k_ax[i_s,2] = s-pi/a
+    elseif s >= 2*pi/a && s < (2+sqrt(2))*pi/a
+        k_ax[i_s,1] = pi/a - (s-2*pi/a)/sqrt(2)
+        k_ax[i_s,2] = pi/a - (s-2*pi/a)/sqrt(2)
+end
 
 ω_save = zeros(n_DOF-13*2,3000)*0im
 for ii = 1:3000
