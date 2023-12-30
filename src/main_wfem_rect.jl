@@ -90,6 +90,7 @@ savefig(string(work_path,"fig_model_meta.pdf"))
 
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF)
 
+#=
 k_ax = zeros(3000,2)
 for ii = 1:1000
     k_ax[ii,1] = ii/1000*pi/0.01
@@ -103,6 +104,7 @@ for ii = 2001:3000
     k_ax[ii,1] = (3001-ii)/1000*pi/0.01
     k_ax[ii,2] = (3001-ii)/1000*pi/0.01
 end
+=#
 
 a = 0.01
 s_ax = range(0, stop = (2+sqrt(2))*pi/a, length = 5000)
