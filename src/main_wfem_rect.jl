@@ -180,7 +180,7 @@ end
 plot!(xticks = ([0,pi/a,2*pi/a,(2+sqrt(2))*pi/a],["O","Γ","M","K"]))
 plot!(Shape([0,s_ax[end],s_ax[end],0],
       [64,64,77,77]), label = "",
-      color = :gray80, linecolor = :gray80, opacity=.9, linewidth = 0)
+      color = :gray80, linecolor = :gray80, opacity = 0.9, linewidth = 0)
 xlabel!("Wavevector")
 ylabel!("Frequency (kHz)")
 plot!(ylims = (0,140))
