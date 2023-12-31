@@ -192,6 +192,50 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             DOFs = [DOF_1;DOF_2;DOF_3;DOF_4]
             Kg[DOFs,DOFs] += Ke
             Mg[DOFs,DOFs] += Me
+        elseif Elements[i_e,2] == "2D_QuadTriangle_ac"
+            i_mat = Elements[i_e,3]
+            i_real = Elements[i_e,4]
+            E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
+            ν = Materials[i_mat,2][3]
+            t = Reals[i_real,2][1]
+            node_1 = Int(Elements[i_e,5][1])
+            node_2 = Int(Elements[i_e,5][2])
+            node_3 = Int(Elements[i_e,5][3])
+            node_4 = Int(Elements[i_e,5][4])
+            node_5 = Int(Elements[i_e,5][5])
+            node_6 = Int(Elements[i_e,5][6])
+            x = zeros(6)
+            y = zeros(6)
+            x[1] = Nodes[node_1,2]
+            y[1] = Nodes[node_1,3]
+            x[2] = Nodes[node_2,2]
+            y[2] = Nodes[node_2,3]
+            x[3] = Nodes[node_3,2]
+            y[3] = Nodes[node_3,3]
+            x[4] = Nodes[node_4,2]
+            y[4] = Nodes[node_4,3]
+            x[5] = Nodes[node_5,2]
+            y[5] = Nodes[node_5,3]
+            x[6] = Nodes[node_6,2]
+            y[6] = Nodes[node_6,3]
+            (Ke,Me,Ce) = cal_KeMe_QuadTriangle(x,y,E,ν,ρ,"PlaneStrain",pml_interface,model_boundary,eta_max)
+            DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
+            DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
+            DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
+            DOF_4  = Int(findall(isequal(node_2+0.2),list_DOF[:,2])[1])
+            DOF_5  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
+            DOF_6  = Int(findall(isequal(node_3+0.2),list_DOF[:,2])[1])
+            DOF_7  = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
+            DOF_8  = Int(findall(isequal(node_4+0.2),list_DOF[:,2])[1])
+            DOF_9  = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
+            DOF_10 = Int(findall(isequal(node_5+0.2),list_DOF[:,2])[1])
+            DOF_11 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
+            DOF_12 = Int(findall(isequal(node_6+0.2),list_DOF[:,2])[1])
+            DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6;DOF_7;DOF_8;DOF_9;DOF_10;DOF_11;DOF_12]
+            Kg[DOFs,DOFs] += Ke
+            Mg[DOFs,DOFs] += Me
+            Cg[DOFs,DOFs] += Ce
         end
     end
 
