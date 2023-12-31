@@ -195,9 +195,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
         elseif Elements[i_e,2] == "2D_QuadTriangle_ac"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
-            E = Materials[i_mat,2][1]
-            ρ = Materials[i_mat,2][2]
-            ν = Materials[i_mat,2][3]
+            c_air = Materials[i_mat,2][1]
             t = Reals[i_real,2][1]
             node_1 = Int(Elements[i_e,5][1])
             node_2 = Int(Elements[i_e,5][2])
