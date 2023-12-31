@@ -6,22 +6,11 @@ function cal_KeMe_QuadTriangle_ac(x,y,c_air,t;pml_interface = [],model_boundary 
               0.4459484909  0.1081030182  0.2233815897
               0.4459484909  0.4459484909  0.2233815897
               0.1081030182  0.4459484909  0.2233815897 ];
-    λ = E*ν/((1+ν)*(1-2*ν))
-    μ = E/(2*(1+ν))
-    if type == "PlaneStress"
-        D = E/(1-ν^2)*[ 1 ν 0
-                        ν 1 0
-                        0 0 (1-ν)/2 ]
-    elseif type == "PlaneStrain"
-        D = [ λ+2*μ  λ      0
-              λ      λ+2*μ  0
-              0      0      μ ]
-    else
-        println("\nPlease specify the plane problem type, plane stress or plane strain?")
-    end
+
     Ke = zeros(12,12)
     Me = zeros(12,12)
     Ce = zeros(12,12)
+
     for i_Gauss = 1:6
         ξ = Gauss[i_Gauss,1]
         η = Gauss[i_Gauss,2]
