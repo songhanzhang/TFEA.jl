@@ -235,7 +235,16 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             Mg[DOFs,DOFs] += Me
             Cg[DOFs,DOFs] += Ce
         elseif Elements[i_e,2] == "3D_Hexahedral"
-            
+            i_mat = Elements[i_e,3]
+            i_real = Elements[i_e,4]
+            E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
+            ν = Materials[i_mat,2][3]
+            Nodes_xy = zeros(8,3)
+            for ii = 1:8
+                ii_node = Elements[i_e,5][ii]
+                Node_xy[ii,1:3] = [ Nodes[ii_node,2]  Nodes[ii_node,3]  Nodes[ii_node,4] ] 
+            end
         end
     end
 
