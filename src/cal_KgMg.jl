@@ -323,19 +323,46 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                     B[5,(ii-1)*3+3] = dNi_dx                    
                     B[6,(ii-1)*3+2] = dNi_dz
                     B[6,(ii-1)*3+3] = dNi_dy
-                    λ = E*ν/((1+ν)*(1-2*ν))
-                    μ = E/(2*(1+ν))
-                    D = [ λ+2*μ λ     λ     0 0 0
-                          λ     λ+2*μ λ     0 0 0
-                          λ     λ     λ+2*μ 0 0 0
-                          0     0     0     μ 0 0
-                          0     0     0     0 μ 0
-                          0     0     0     0 0 μ ]
-                    NN = kron(N, [1 0 0; 0 1 0; 0 0 1])
-                    Me = Me + ρ*transpose(NN)*NN*abs(det(J))*H
-                    Ke = Ke + transpose(B)*D*B*abs(det(J))*H
                 end
+                λ = E*ν/((1+ν)*(1-2*ν))
+                μ = E/(2*(1+ν))
+                D = [ λ+2*μ λ     λ     0 0 0
+                      λ     λ+2*μ λ     0 0 0
+                      λ     λ     λ+2*μ 0 0 0
+                      0     0     0     μ 0 0
+                      0     0     0     0 μ 0
+                      0     0     0     0 0 μ ]
+                NN = kron(N, [1 0 0; 0 1 0; 0 0 1])
+                Me = Me + ρ*transpose(NN)*NN*abs(det(J))*H
+                Ke = Ke + transpose(B)*D*B*abs(det(J))*H                
             end
+            DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
+            DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
+            DOF_3  = Int(findall(isequal(node_1+0.3),list_DOF[:,2])[1])
+            DOF_4  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
+            DOF_5  = Int(findall(isequal(node_2+0.2),list_DOF[:,2])[1])
+            DOF_6  = Int(findall(isequal(node_2+0.3),list_DOF[:,2])[1])
+            DOF_7  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
+            DOF_8  = Int(findall(isequal(node_3+0.2),list_DOF[:,2])[1])
+            DOF_9  = Int(findall(isequal(node_3+0.3),list_DOF[:,2])[1])
+            DOF_10 = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
+            DOF_11 = Int(findall(isequal(node_4+0.2),list_DOF[:,2])[1])
+            DOF_12 = Int(findall(isequal(node_4+0.3),list_DOF[:,2])[1])
+            DOF_13 = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
+            DOF_14 = Int(findall(isequal(node_5+0.2),list_DOF[:,2])[1])
+            DOF_15 = Int(findall(isequal(node_5+0.3),list_DOF[:,2])[1])
+            DOF_16 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
+            DOF_17 = Int(findall(isequal(node_6+0.2),list_DOF[:,2])[1])
+            DOF_18 = Int(findall(isequal(node_6+0.3),list_DOF[:,2])[1])
+            DOF_19 = Int(findall(isequal(node_7+0.1),list_DOF[:,2])[1])
+            DOF_20 = Int(findall(isequal(node_7+0.2),list_DOF[:,2])[1])
+            DOF_21 = Int(findall(isequal(node_7+0.3),list_DOF[:,2])[1])
+            DOF_22 = Int(findall(isequal(node_8+0.1),list_DOF[:,2])[1])
+            DOF_23 = Int(findall(isequal(node_8+0.2),list_DOF[:,2])[1])
+            DOF_24 = Int(findall(isequal(node_8+0.3),list_DOF[:,2])[1])
+            DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6;DOF_7;DOF_8;DOF_9;DOF_10;DOF_11;DOF_12;DOF_13;DOF_14;DOF_15;DOF_16;DOF_17;DOF_18;DOF_19;DOF_20;DOF_21;DOF_22;DOF_23;DOF_24]
+            Kg[DOFs,DOFs] += Ke
+            Mg[DOFs,DOFs] += Me
         end
     end
 
