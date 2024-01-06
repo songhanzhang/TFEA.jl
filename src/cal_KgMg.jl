@@ -245,6 +245,31 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                 ii_node = Elements[i_e,5][ii]
                 Node_xy[ii,1:3] = [ Nodes[ii_node,2]  Nodes[ii_node,3]  Nodes[ii_node,4] ] 
             end
+            tp = 1/sqrt(3)
+            Gauss = [ -tp -tp -tp
+                      -tp -tp  tp
+                      -tp  tp -tp
+                      -tp  tp  tp
+                       tp -tp -tp
+                       tp -tp  tp
+                       tp  tp -tp
+                       tp  tp  tp ]
+            Me = zeros(24,24)
+            Ke = zeros(24,24)
+            for i_Gauss = 1:size(Gauss,1)
+                ξ   = Gauss(i_Gauss,1)
+                η  = Gauss(i_Gauss,2)
+                ζ = Gauss(i_Gauss,3)
+                N = zeros(1,8)
+                N[1,1] = 1/8*(1-ξ)*(1-η)*(1+ζ)
+                N[1,2] = 1/8*(1+ξ)*(1-η)*(1+ζ)
+                N[1,3] = 1/8*(1+ξ)*(1-η)*(1-ζ)
+                N[1,4] = 1/8*(1-ξ)*(1-η)*(1-ζ)
+                N[1,5] = 1/8*(1-ξ)*(1+η)*(1+ζ)
+                N[1,6] = 1/8*(1+ξ)*(1+η)*(1+ζ)
+                N[1,7] = 1/8*(1+ξ)*(1+η)*(1-ζ)
+                N[1,8] = 1/8*(1-ξ)*(1+η)*(1-ζ)
+            end
         end
     end
 
