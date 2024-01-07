@@ -11,6 +11,8 @@ using Printf
 using Measures
 using JLD
 
+work_path = "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/"
+
 file = matopen("/Users/songhan.zhang/Documents/MATLAB/2023-QuadraticTriangle/model.mat")
 Nodes_import = read(file, "Nodes")
 n_nodes = size(Nodes_import,1)
@@ -45,10 +47,10 @@ plot_model = plot(
 plot_model_elements(Nodes, Elements)
 plot_model_nodes(Nodes, node_size = 5)
 plot!()
-savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
+savefig(string(work_path, "model.pdf"))
 
 save(
-    "model.jld",
+    string(work_path, "model.jld"),
     "Nodes", Nodes,
     "Elements", Elements,
     "pml_interface", pml_interface,
@@ -61,7 +63,7 @@ save(
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                       Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
 
-save("mck.jld", "Mg", Mg, "Cg", Cg, "Kg", Kg)
+save(string(work_path, "mck.jld"), "Mg", Mg, "Cg", Cg, "Kg", Kg)
 
 # %% Excitation source
 Time_label = 0:2e-7:0.5e-3
@@ -80,10 +82,17 @@ plot!(fig_F, Time_label*1e6, Fg[tar_DOF,:], label = "",
       color = :black, w = 1, linestyle = :solid)
 xlabel!(fig_F, "Time (μs)", guidefontsize = 10)
 ylabel!(fig_F, "Force (N)")
-savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/excitation.pdf")
+savefig(string(work_path, "excitation.pdf"))
 
 # %% Solve - direct time integral
-Ug = sol_CDM(Mg,Cg,Kg,Fg,t_ax)
+Ug = sol_CDM(Mg,Cg,Kg,Fg,Time_label)
+
+save(string(work_path, "result.jld"), "Time_label", Time_label, "Fg", Fg, "Ug", Ug)
+
+result = load(string(work_path, "result.jld"))
+Time_label = result["Time_label"]
+Fg = result["Fg"]
+Ug = result["Ug"]
 
 u_sel_1 = Ug[(137-1)*2+1,:]*1e9
 u_sel_2 = Ug[(7792-1)*2+1,:]*1e9
@@ -102,7 +111,7 @@ plot!(t_ax*1e6, u_sel_2, w = 1.5, color = :dodgerblue)
 xlabel!("Time (μs)")
 ylabel!("Displacement (μm)")
 plot!(bottom_margin = 3mm)
-savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ut.pdf")
+savefig(string(work_path, "ut.pdf"))
 
 # %% Plot wave field
 ani = @animate for i_t = 20:20:2000
