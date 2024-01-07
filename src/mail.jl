@@ -32,9 +32,6 @@ Reals = [ 1  (1) ]
 
 (n_DOF, list_DOF) = cal_list_DOF(n_nodes, [1,2])
 
-(Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
-                      Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
-
 plot_model = plot(
     size = (560,400),
     dpi = 600,
@@ -48,6 +45,9 @@ plot_model_elements(Nodes, Elements)
 plot_model_nodes(Nodes, node_size = 5)
 plot!()
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
+
+(Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
+                      Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
 
 # %% Excitation source
 Time_label = 0:2e-7:0.5e-3
