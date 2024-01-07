@@ -9,6 +9,7 @@ using SparseArrays
 using Plots
 using Printf
 using Measures
+using JLD
 
 file = matopen("/Users/songhan.zhang/Documents/MATLAB/2023-QuadraticTriangle/model.mat")
 Nodes_import = read(file, "Nodes")
@@ -45,6 +46,17 @@ plot_model_elements(Nodes, Elements)
 plot_model_nodes(Nodes, node_size = 5)
 plot!()
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/model.pdf")
+
+save(
+    "model.jld",
+    "Nodes", Nodes,
+    "Elements", Elements,
+    "pml_interface", pml_interface,
+    "model_boundary", model_boundary,
+    "Materials", Materials,
+    "Reals", Reals,
+    "list_DOF", list_DOF
+)
 
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                       Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
