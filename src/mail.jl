@@ -61,6 +61,8 @@ save(
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                       Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
 
+save("mck.jld", "Mg", Mg, "Cg", Cg, "Kg", Kg)
+
 # %% Excitation source
 Time_label = 0:2e-7:0.5e-3
 ctf = 60e3
