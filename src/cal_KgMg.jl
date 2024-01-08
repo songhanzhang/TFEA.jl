@@ -242,132 +242,22 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             x = zeros(8)
             y = zeros(8)
             z = zeros(8)
+            node_nums = Array{Int,1}(undef,8)
             for ii = 1:8
-                ii_node = Elements[i_e,5][ii]
-                x[ii] = Nodes[ii_node,2]
-                y[ii] = Nodes[ii_node,3]
-                z[ii] = Nodes[ii_node,4] 
+                node_nums[ii] = Int(Elements[i_e,5][ii])
+                x[ii] = Nodes[node_nums[ii],2]
+                y[ii] = Nodes[node_nums[ii],3]
+                z[ii] = Nodes[node_nums[ii],4] 
             end
-            
-            (Ke,Me,Ce) = cal_KeMe_Hexa(x,y,z,E,ρ,ν)
-            tp = 1/sqrt(3)
-            Gauss = [ -tp -tp -tp
-                      -tp -tp  tp
-                      -tp  tp -tp
-                      -tp  tp  tp
-                       tp -tp -tp
-                       tp -tp  tp
-                       tp  tp -tp
-                       tp  tp  tp ]
-            Me = zeros(24,24)
-            Ke = zeros(24,24)
-            for i_Gauss = 1:size(Gauss,1)
-                ξ   = Gauss(i_Gauss,1)
-                η  = Gauss(i_Gauss,2)
-                ζ = Gauss(i_Gauss,3)
-                N = zeros(1,8)
-                N[1,1] = 1/8*(1-ξ)*(1-η)*(1+ζ)
-                N[1,2] = 1/8*(1+ξ)*(1-η)*(1+ζ)
-                N[1,3] = 1/8*(1+ξ)*(1-η)*(1-ζ)
-                N[1,4] = 1/8*(1-ξ)*(1-η)*(1-ζ)
-                N[1,5] = 1/8*(1-ξ)*(1+η)*(1+ζ)
-                N[1,6] = 1/8*(1+ξ)*(1+η)*(1+ζ)
-                N[1,7] = 1/8*(1+ξ)*(1+η)*(1-ζ)
-                N[1,8] = 1/8*(1-ξ)*(1+η)*(1-ζ)
-                dN_dξ = zeros(1,8)
-                dN_dξ[1,1] = -1/8*(1-η)*(1+ζ)
-                dN_dξ[1,2] =  1/8*(1-η)*(1+ζ)
-                dN_dξ[1,3] =  1/8*(1-η)*(1-ζ)
-                dN_dξ[1,4] = -1/8*(1-η)*(1-ζ)
-                dN_dξ[1,5] = -1/8*(1+η)*(1+ζ)
-                dN_dξ[1,6] =  1/8*(1+η)*(1+ζ)
-                dN_dξ[1,7] =  1/8*(1+η)*(1-ζ)
-                dN_dξ[1,8] = -1/8*(1+η)*(1-ζ)
-                dN_dη = zeros(1,8)
-                dN_dη[1,1] = -1/8*(1-ξ)*(1+ζ)
-                dN_dη[1,2] = -1/8*(1+ξ)*(1+ζ)
-                dN_dη[1,3] = -1/8*(1+ξ)*(1-ζ)
-                dN_dη[1,4] = -1/8*(1-ξ)*(1-ζ)
-                dN_dη[1,5] =  1/8*(1-ξ)*(1+ζ)
-                dN_dη[1,6] =  1/8*(1+ξ)*(1+ζ)
-                dN_dη[1,7] =  1/8*(1+ξ)*(1-ζ)
-                dN_dη[1,8] =  1/8*(1-ξ)*(1-ζ)
-                dN_dζ = zeros(1,8)
-                dN_dζ[1,1] =  1/8*(1-ξ)*(1-η)
-                dN_dζ[1,2] =  1/8*(1+ξ)*(1-η)
-                dN_dζ[1,3] = -1/8*(1+ξ)*(1-η)
-                dN_dζ[1,4] = -1/8*(1-ξ)*(1-η)
-                dN_dζ[1,5] =  1/8*(1-ξ)*(1+η)
-                dN_dζ[1,6] =  1/8*(1+ξ)*(1+η)
-                dN_dζ[1,7] = -1/8*(1+ξ)*(1+η)
-                dN_dζ[1,8] = -1/8*(1-ξ)*(1+η)
-                dx_dξ = dN_dξ * Nodes_xy[:,1]
-                dx_dη = dN_dη * Nodes_xy[:,1]
-                dx_dζ = dN_dζ * Nodes_xy[:,1]
-                dy_dξ = dN_dξ * Nodes_xy[:,2]
-                dy_dη = dN_dη * Nodes_xy[:,2]
-                dy_dζ = dN_dζ * Nodes_xy[:,2]
-                dz_dξ = dN_dξ * Nodes_xy[:,3]
-                dz_dη = dN_dη * Nodes_xy[:,3]
-                dz_dζ = dN_dζ * Nodes_xy[:,3]
-                J = [ dx_dξ  dy_dξ  dz_dξ
-                      dx_dη  dy_dη  dz_dη
-                      dx_dζ  dy_dζ  dz_dζ ]
-                B = zeros(6,24)
-                for ii = 1:8
-                    Temp = J\[dN_dξ[1,ii]; dN_dη[1,ii]; dN_dζ[1,ii]]
-                    dNi_dx = Temp[1,1]
-                    dNi_dy = Temp[2,1]
-                    dNi_dz = Temp[3,1]
-                    B[1,(ii-1)*3+1] = dNi_dx
-                    B[2,(ii-1)*3+2] = dNi_dy
-                    B[3,(ii-1)*3+3] = dNi_dz
-                    B[4,(ii-1)*3+1] = dNi_dy
-                    B[4,(ii-1)*3+2] = dNi_dx
-                    B[5,(ii-1)*3+1] = dNi_dz
-                    B[5,(ii-1)*3+3] = dNi_dx                    
-                    B[6,(ii-1)*3+2] = dNi_dz
-                    B[6,(ii-1)*3+3] = dNi_dy
+            (Ke,Me,Ce) = cal_KeMe_Hexa(x,y,z,E,ρ,ν,pml_interface,model_boundary,eta_max)
+            DOF_sel = Array{Int,1}(undef,24)
+            for ii = 1:8
+                for jj = 1:3
+                    DOF_sel[(ii-1)*3+jj] = Int(findall(isequal(node_nums[ii]+0.1*jj),list_DOF[:,2])[1])
                 end
-                λ = E*ν/((1+ν)*(1-2*ν))
-                μ = E/(2*(1+ν))
-                D = [ λ+2*μ λ     λ     0 0 0
-                      λ     λ+2*μ λ     0 0 0
-                      λ     λ     λ+2*μ 0 0 0
-                      0     0     0     μ 0 0
-                      0     0     0     0 μ 0
-                      0     0     0     0 0 μ ]
-                NN = kron(N, [1 0 0; 0 1 0; 0 0 1])
-                Me = Me + ρ*transpose(NN)*NN*abs(det(J))*H
-                Ke = Ke + transpose(B)*D*B*abs(det(J))*H                
             end
-            DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
-            DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
-            DOF_3  = Int(findall(isequal(node_1+0.3),list_DOF[:,2])[1])
-            DOF_4  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
-            DOF_5  = Int(findall(isequal(node_2+0.2),list_DOF[:,2])[1])
-            DOF_6  = Int(findall(isequal(node_2+0.3),list_DOF[:,2])[1])
-            DOF_7  = Int(findall(isequal(node_3+0.1),list_DOF[:,2])[1])
-            DOF_8  = Int(findall(isequal(node_3+0.2),list_DOF[:,2])[1])
-            DOF_9  = Int(findall(isequal(node_3+0.3),list_DOF[:,2])[1])
-            DOF_10 = Int(findall(isequal(node_4+0.1),list_DOF[:,2])[1])
-            DOF_11 = Int(findall(isequal(node_4+0.2),list_DOF[:,2])[1])
-            DOF_12 = Int(findall(isequal(node_4+0.3),list_DOF[:,2])[1])
-            DOF_13 = Int(findall(isequal(node_5+0.1),list_DOF[:,2])[1])
-            DOF_14 = Int(findall(isequal(node_5+0.2),list_DOF[:,2])[1])
-            DOF_15 = Int(findall(isequal(node_5+0.3),list_DOF[:,2])[1])
-            DOF_16 = Int(findall(isequal(node_6+0.1),list_DOF[:,2])[1])
-            DOF_17 = Int(findall(isequal(node_6+0.2),list_DOF[:,2])[1])
-            DOF_18 = Int(findall(isequal(node_6+0.3),list_DOF[:,2])[1])
-            DOF_19 = Int(findall(isequal(node_7+0.1),list_DOF[:,2])[1])
-            DOF_20 = Int(findall(isequal(node_7+0.2),list_DOF[:,2])[1])
-            DOF_21 = Int(findall(isequal(node_7+0.3),list_DOF[:,2])[1])
-            DOF_22 = Int(findall(isequal(node_8+0.1),list_DOF[:,2])[1])
-            DOF_23 = Int(findall(isequal(node_8+0.2),list_DOF[:,2])[1])
-            DOF_24 = Int(findall(isequal(node_8+0.3),list_DOF[:,2])[1])
-            DOFs = [DOF_1;DOF_2;DOF_3;DOF_4;DOF_5;DOF_6;DOF_7;DOF_8;DOF_9;DOF_10;DOF_11;DOF_12;DOF_13;DOF_14;DOF_15;DOF_16;DOF_17;DOF_18;DOF_19;DOF_20;DOF_21;DOF_22;DOF_23;DOF_24]
-            Kg[DOFs,DOFs] += Ke
-            Mg[DOFs,DOFs] += Me
+            Kg[DOF_sel,DOF_sel] += Ke
+            Mg[DOF_sel,DOF_sel] += Me
         end
     end
 
