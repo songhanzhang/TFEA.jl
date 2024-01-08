@@ -239,12 +239,17 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             E = Materials[i_mat,2][1]
             ρ = Materials[i_mat,2][2]
             ν = Materials[i_mat,2][3]
-            Nodes_xy = zeros(8,3)
+            x = zeros(8)
+            y = zeros(8)
+            z = zeros(8)
             for ii = 1:8
                 ii_node = Elements[i_e,5][ii]
-                Node_xy[ii,1:3] = [ Nodes[ii_node,2]  Nodes[ii_node,3]  Nodes[ii_node,4] ] 
+                x[ii] = Nodes[ii_node,2]
+                y[ii] = Nodes[ii_node,3]
+                z[ii] = Nodes[ii_node,4] 
             end
             
+            (Ke,Me,Ce) = cal_KeMe_Hexa(x,y,z,E,ρ,ν)
             tp = 1/sqrt(3)
             Gauss = [ -tp -tp -tp
                       -tp -tp  tp
