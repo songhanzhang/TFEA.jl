@@ -96,7 +96,7 @@ function cal_KeMe_Hexa(x,y,z,E,ρ,ν,pml_interface,model_boundary,eta_max)
         if !isempty(pml_interface)
             x_gauss = transpose(Nb)*x
             y_gauss = transpose(Nb)*y
-            # eta_pml = cal_pml_eta(pml_interface, model_boundary, x_gauss, y_gauss, eta_max)
+            
             x_Lb = pml_interface[1]
             x_Rb = pml_interface[2]
             y_Bb = pml_interface[3]
