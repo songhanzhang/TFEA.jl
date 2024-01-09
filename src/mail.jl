@@ -1,8 +1,6 @@
 # push!(LOAD_PATH,"/Users/songhan.zhang/Documents/GitHub/TFEA.jl/src")
 # import TFEA
 
-include("/Users/songhan.zhang/Documents/GitHub/TFEA.jl/src/TFEA.jl")
-
 using MAT
 using LinearAlgebra
 using SparseArrays
@@ -11,6 +9,7 @@ using Printf
 using Measures
 using JLD
 
+include("/Users/songhan.zhang/Documents/GitHub/TFEA.jl/src/TFEA.jl")
 work_path = "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/"
 
 file = matopen("/Users/songhan.zhang/Documents/MATLAB/2023-QuadraticTriangle/model.mat")
@@ -59,6 +58,16 @@ save(
     "Reals", Reals,
     "list_DOF", list_DOF
 )
+
+model = load(string(work_path, "model.jld"))
+Nodes = model["Nodes"]
+Elements = model["Elements"]
+pml_interface = model["pml_interface"]
+model_boundary = model["model_boundary"]
+Materials = model["Materials"]
+Reals = model["Reals"]
+list_DOF = model["list_DOF"]
+model = :nothing
 
 (Kg,Mg,Cg) = cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                       Nodes_a = [], pml_interface, model_boundary, eta_max = 500e3)
