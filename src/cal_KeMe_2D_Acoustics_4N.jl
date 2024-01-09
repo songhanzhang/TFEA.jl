@@ -6,7 +6,7 @@ function cal_KeMe_2D_Acoustics_4N(x,y,c_air,t)
               -1/(sqrt(3))   1/(sqrt(3))  1 ]
     Ke = zeros(4,4)
     Me = zeros(4,4)
-    for i_Gauss = 1:size(Gauss,1)
+    for i_Gauss = 1:4
         ξ = Gauss[i_Gauss,1]
         η = Gauss[i_Gauss,2]
         H = Gauss[i_Gauss,3]
