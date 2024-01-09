@@ -14,7 +14,7 @@ function cal_KeMe_Hexa(x,y,z,E,ρ,ν,pml_interface,model_boundary,eta_max)
     Me = zeros(24,24)
     Ce = zeros(24,24)
     Ke = zeros(24,24)
-    for i_Gauss = 1:size(Gauss,1)
+    for i_Gauss = 1:8
         ξ = Gauss[i_Gauss,1]
         η = Gauss[i_Gauss,2]
         ζ = Gauss[i_Gauss,3]
