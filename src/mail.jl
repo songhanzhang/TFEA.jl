@@ -473,6 +473,7 @@ for (i_x,x) in enumerate(x_ax)
         end
     end
 end
+
 ani = @animate for i_ωt = 1:1:20
     fig_ux = plot(size = (600,350),
                   dpi = 300,
