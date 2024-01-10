@@ -388,7 +388,6 @@ xlabel!("x (m)")
 ylabel!("y (m)")
 savefig("/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/wave_field_230.png")
 
-
 f = 60e3
 ω = 2*pi*f
 Fg_hat = zeros(n_DOF,1)
