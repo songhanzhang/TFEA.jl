@@ -1,11 +1,11 @@
-include("/Users/songhan.zhang/Documents/GitHub/TFEA.jl/src/TFEA.jl")
-work_path = "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/"
 using MAT
 using LinearAlgebra
 using SparseArrays
 using Plots
 using Printf
 using Measures
+include("/Users/songhan.zhang/Documents/GitHub/TFEA.jl/src/TFEA.jl")
+work_path = "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/"
 
 Nodes = zeros(49,3)
 counter = 0
@@ -124,7 +124,7 @@ end
 
 ω_save = zeros(n_DOF-13*2,5000)*0im
 for ii = 1:5000
-
+    println("ii = ",ii)
     kx = k_ax[ii,1]
     ky = k_ax[ii,2]
 
