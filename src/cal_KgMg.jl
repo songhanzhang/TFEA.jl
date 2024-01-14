@@ -12,9 +12,9 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
 
     for i_e = 1:n_elements
 
-        if mod(i_e, Int(floor(n_elements/1))) == 0
-            println("Progress ", i_e/n_elements*100, " %")
-        end
+        # if mod(i_e, Int(floor(n_elements/1))) == 0
+        println("Progress ", i_e/n_elements*100, " %")
+        # end
 
         if Elements[i_e,2] == "2D_Bar"
             i_mat = Elements[i_e,3]
