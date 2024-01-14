@@ -148,7 +148,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             y[5] = Nodes[node_5,3]
             x[6] = Nodes[node_6,2]
             y[6] = Nodes[node_6,3]
-            (Ke,Me,Ce) = cal_KeMe_QuadTriangle(x,y,E,ν,ρ,"PlaneStrain",pml_interface,model_boundary,eta_max)
+            (Ke,Me,Ce) = cal_KeMe_QuadTriangle(x,y,E,ν,ρ,"PlaneStress",pml_interface,model_boundary,eta_max)
             DOF_1  = Int(findall(isequal(node_1+0.1),list_DOF[:,2])[1])
             DOF_2  = Int(findall(isequal(node_1+0.2),list_DOF[:,2])[1])
             DOF_3  = Int(findall(isequal(node_2+0.1),list_DOF[:,2])[1])
