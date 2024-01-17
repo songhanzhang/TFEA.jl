@@ -185,3 +185,4 @@ plot!(Shape([0,s_ax[end],s_ax[end],0],
 xlabel!("Wavevector")
 ylabel!("Frequency (kHz)")
 plot!(ylims = (0,140))
+
