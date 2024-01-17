@@ -156,6 +156,7 @@ for ii = 1:5000
     (λ,Φ) = eigen(Kg_bc,Mg_bc)
     ω_save[:,ii] = sqrt.(Complex.(λ))
 end
+
 ω_save = real(ω_save)
 for ii = 1:5000
     ω_save[:,ii] = sort(ω_save[:,ii])
