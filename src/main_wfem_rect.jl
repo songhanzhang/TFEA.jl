@@ -177,7 +177,6 @@ for ii = 1:8
         color = color_ax[ii], markerstrokecolor = color_ax[ii], markersize = 1
 )
 end
-# plot!(xticks = ([0,1000,2000,3000],["O","Γ","M","K"]))
 plot!(xticks = ([0,pi/a,2*pi/a,(2+sqrt(2))*pi/a],["O","Γ","M","K"]))
 plot!(Shape([0,s_ax[end],s_ax[end],0],
       [64,64,77,77]), label = "",
