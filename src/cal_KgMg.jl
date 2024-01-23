@@ -105,6 +105,7 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
             ν = Materials[i_mat,2][3]
             t = Reals[i_real,2][1]
             Nodes_xy = zeros(36,2)
