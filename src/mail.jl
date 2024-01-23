@@ -201,7 +201,7 @@ ani = @animate for i_t = 20:20:2000
 end
 gif(
     ani,
-    "/Users/songhan.zhang/Documents/Julia/2023-TFEA-v1120-AcMetaMat/ani.gif",
+    string(work_path,"ani.gif"),
     fps=20
 )
 
