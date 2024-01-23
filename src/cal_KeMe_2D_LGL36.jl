@@ -105,11 +105,14 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
             B[3,(ii-1)*2+1] = Ni_xy[2];
             B[3,(ii-1)*2+2] = Ni_xy[1];
         end
+        NN = kron(N, [1 0; 0 1])
         Ke += t*transpose(B)*D*B*abs(det(J))*H
-        Me += ρ*t*transpose(N)*N*abs(det(J))*H
+        Me += ρ*t*transpose(NN)*NN*abs(det(J))*H
         if !isempty(pml_interface)
-            x_gauss = transpose(Nb)*x
-            y_gauss = transpose(Nb)*y
+            x_gauss = N*Nodes_xy[:,1]
+            x_gauss = x_gauss[1]
+            y_gauss = N*Nodes_xy[:,2]
+            y_gauss = y_gauss[1]
             # eta_pml = cal_pml_eta(pml_interface, model_boundary, x_gauss, y_gauss, eta_max)
             x_Lb = pml_interface[1]
             x_Rb = pml_interface[2]
@@ -132,7 +135,7 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
             else
                 eta_pml = 0.0
             end
-            Ce += Me * eta_pml
+            Ce += ρ*t*transpose(NN)*NN*abs(det(J))*H * eta_pml
         end
     end
 
