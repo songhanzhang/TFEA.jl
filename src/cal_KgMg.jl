@@ -235,6 +235,12 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             Mg[DOFs,DOFs] += Me
             Cg[DOFs,DOFs] += Ce
         elseif Elements[i_e,2] == "2D_LGL_36n"
+            i_mat = Elements[i_e,3]
+            i_real = Elements[i_e,4]
+            E = Materials[i_mat,2][1]
+            ρ = Materials[i_mat,2][2]
+            ν = Materials[i_mat,2][3]
+            t = Reals[i_real,2][1]
             
         elseif Elements[i_e,2] == "3D_Hexahedral"
             i_mat = Elements[i_e,3]
