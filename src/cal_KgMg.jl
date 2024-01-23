@@ -105,14 +105,14 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
             E = Materials[i_mat,2][1]
-            v = Materials[i_mat,2][3]
+            ν = Materials[i_mat,2][3]
             t = Reals[i_real,2][1]
             Nodes_xy = zeros(36,2)
             for ii = 1:36
                 ii_node = Elements[i_e,5][ii]
                 Nodes_xy[ii,1:2] = [Nodes[ii_node,2] Nodes[ii_node,3]]
             end
-            Ke = cal_Ke_2D_LGL_36(E,ν,t,Nodes_xy)
+            (Ke,Me,Ce) = cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_max)
             DOFs = Array{Int64,1}(undef,72)
             for i_node = 1:36
                 for i_dir = 1:2
@@ -121,6 +121,8 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
                 end
             end
             Kg[DOFs,DOFs] += Ke
+            Mg[DOFs,DOFs] += Me
+            Cg[DOFs,DOFs] += Ce
         elseif Elements[i_e,2] == "2D_QuadTriangle"
             i_mat = Elements[i_e,3]
             i_real = Elements[i_e,4]
@@ -234,14 +236,6 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             Kg[DOFs,DOFs] += Ke
             Mg[DOFs,DOFs] += Me
             Cg[DOFs,DOFs] += Ce
-        elseif Elements[i_e,2] == "2D_LGL_36n"
-            i_mat = Elements[i_e,3]
-            i_real = Elements[i_e,4]
-            E = Materials[i_mat,2][1]
-            ρ = Materials[i_mat,2][2]
-            ν = Materials[i_mat,2][3]
-            t = Reals[i_real,2][1]
-            
         elseif Elements[i_e,2] == "3D_Hexahedral"
             i_mat = Elements[i_e,3]
             E = Materials[i_mat,2][1]
