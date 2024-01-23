@@ -234,6 +234,8 @@ function cal_KgMg(Nodes, Elements, Materials, Reals, list_DOF;
             Kg[DOFs,DOFs] += Ke
             Mg[DOFs,DOFs] += Me
             Cg[DOFs,DOFs] += Ce
+        elseif Elements[i_e,2] == "2D_LGL_36n"
+            
         elseif Elements[i_e,2] == "3D_Hexahedral"
             i_mat = Elements[i_e,3]
             E = Materials[i_mat,2][1]
