@@ -119,7 +119,7 @@ function cal_KeMe_Hexa(x,y,z,E,ρ,ν,pml_interface,model_boundary,eta_max)
             #     eta_pml = 0.0
             # end
             eta_pml = cal_pml_eta(pml_interface,model_boundary,x_gauss,y_gauss,eta_max)
-            Ce += Me * eta_pml
+            Ce += ρ*transpose(NN)*NN*abs(det(J)) * eta_pml
         end
     end
 
