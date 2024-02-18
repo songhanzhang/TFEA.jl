@@ -92,7 +92,7 @@ function cal_KeMe_QuadTriangle(x,y,E,ν,ρ,type,pml_interface,model_boundary,eta
                 eta_pml = 0.0
             end
             # Ce += Me * eta_pml
-            
+            Ce += ρ*transpose(N)*N*abs(det(J))*H * eta_pml
         end
         if det(J) < 0
             println("\nAttension: The determinate of the Jacobian is negative!")
