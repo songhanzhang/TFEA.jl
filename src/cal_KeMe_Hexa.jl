@@ -91,8 +91,8 @@ function cal_KeMe_Hexa(x,y,z,E,ρ,ν,pml_interface,model_boundary,eta_max)
               0     0     0     0 μ 0
               0     0     0     0 0 μ ]
         NN = kron(N, [1 0 0; 0 1 0; 0 0 1])
-        Me = Me + ρ*transpose(NN)*NN*abs(det(J))
-        Ke = Ke + transpose(B)*D*B*abs(det(J))
+        Me += ρ*transpose(NN)*NN*abs(det(J))
+        Ke += transpose(B)*D*B*abs(det(J))
         if !isempty(pml_interface)
             x_gauss = transpose(Nb)*x
             y_gauss = transpose(Nb)*y
