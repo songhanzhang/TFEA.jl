@@ -9,8 +9,8 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
     ξ_label[6] =  1
     η_label = ξ_label[:]
     Gauss = zeros(36,3)
-    for (i_ξ, ξ) in enumerate(ξ_label)
-        for (i_η, η) in enumerate(η_label)
+    for (i_ξ,ξ) in enumerate(ξ_label)
+        for (i_η,η) in enumerate(η_label)
             Gauss[(i_ξ-1)*6+i_η,1] = ξ
             Gauss[(i_ξ-1)*6+i_η,2] = η
             Gauss[(i_ξ-1)*6+i_η,3] = 1/15/(1/8*(63*ξ^5-70*ξ^3+15*ξ))^2 * 1/15/(1/8*(63*η^5-70*η^3+15*η))^2
