@@ -1,4 +1,4 @@
-function cal_KeMe_2D_Acoustics_4N(x,y,c_air,t)
+function cal_KeMe_2D_Acoustics_4N(x,y,c_air,t;pml_interface = [],model_boundary = [], eta_max = 0)
 
     Gauss = [ -1/(sqrt(3))  -1/(sqrt(3))  1
                1/(sqrt(3))  -1/(sqrt(3))  1
