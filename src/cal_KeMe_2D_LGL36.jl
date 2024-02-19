@@ -100,10 +100,10 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
             Ni_xi  = N_xi[ii]
             Ni_eta = N_eta[ii]
             Ni_xy = J\[Ni_xi; Ni_eta]
-            B[1,(ii-1)*2+1] = Ni_xy[1];
-            B[2,(ii-1)*2+2] = Ni_xy[2];
-            B[3,(ii-1)*2+1] = Ni_xy[2];
-            B[3,(ii-1)*2+2] = Ni_xy[1];
+            B[1,(ii-1)*2+1] = Ni_xy[1]
+            B[2,(ii-1)*2+2] = Ni_xy[2]
+            B[3,(ii-1)*2+1] = Ni_xy[2]
+            B[3,(ii-1)*2+2] = Ni_xy[1]
         end
         NN = kron(N, [1 0; 0 1])
         Ke += t*transpose(B)*D*B*abs(det(J))*H
