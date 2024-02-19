@@ -135,7 +135,7 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
             else
                 eta_pml = 0.0
             end
-            Ce += ρ*t*transpose(NN)*NN*abs(det(J))*H * eta_pml
+            Ce += (ρ*t*transpose(NN)*NN*abs(det(J))*H) * eta_pml
         end
     end
 
