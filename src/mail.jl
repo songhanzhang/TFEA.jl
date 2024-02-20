@@ -116,7 +116,7 @@ fig_u_sel = plot(
     tickfontsize = 10
 )
 plot!(t_ax*1e6, u_sel_1, label = "", w = 1.5, color = :pink1)
-plot!(t_ax*1e6, u_sel_2, w = 1.5, color = :dodgerblue)
+plot!(t_ax*1e6, u_sel_2, label = "", w = 1.5, color = :dodgerblue)
 xlabel!("Time (μs)")
 ylabel!("Displacement (μm)")
 plot!(bottom_margin = 3mm)
