@@ -40,7 +40,7 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
                 end
             end
         end
-        N_xi = zeros(1,36)
+        dN_dξ = zeros(1,36)
         for aa = 1:6
             for bb = 1:6
                 for kk = 1:6
@@ -53,17 +53,17 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
                                 Temp *= 1/(ξ_label[aa] - ξ_label[kk])
                             end
                         end
-                        N_xi[1, (aa-1)*6+bb] += Temp
+                        dN_dξ[1, (aa-1)*6+bb] += Temp
                     end
                 end
                 for jj = 1:6
                     if jj != bb
-                        N_xi[1, (aa-1)*6+bb] *= (η-η_label[jj])/(η_label[bb]-η_label[jj])
+                        dN_dξ[1, (aa-1)*6+bb] *= (η-η_label[jj])/(η_label[bb]-η_label[jj])
                     end
                 end
             end
         end
-        N_eta = zeros(1,36)
+        dN_dη = zeros(1,36)
         for aa = 1:6
             for bb = 1:6
                 for kk = 1:6
@@ -76,20 +76,20 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
                                 Temp *= 1/(η_label[bb] - η_label[kk])
                             end
                         end
-                        N_eta[1, (aa-1)*6+bb] += Temp
+                        dN_dη[1, (aa-1)*6+bb] += Temp
                     end
                 end
                 for jj = 1:6
                     if jj != aa
-                        N_eta[1, (aa-1)*6+bb] *= (ξ-ξ_label[jj])/(ξ_label[aa]-ξ_label[jj])
+                        dN_dη[1, (aa-1)*6+bb] *= (ξ-ξ_label[jj])/(ξ_label[aa]-ξ_label[jj])
                     end
                 end
             end
         end
-        dx_dξ = N_xi  * Nodes_xy[:,1]
-        dx_dη = N_eta * Nodes_xy[:,1]
-        dy_dξ = N_xi  * Nodes_xy[:,2]
-        dy_dη = N_eta * Nodes_xy[:,2]
+        dx_dξ = dN_dξ  * Nodes_xy[:,1]
+        dx_dη = dN_dη * Nodes_xy[:,1]
+        dy_dξ = dN_dξ  * Nodes_xy[:,2]
+        dy_dη = dN_dη * Nodes_xy[:,2]
         J = [ dx_dξ  dy_dξ
               dx_dη  dy_dη ]
         D = E/(1-ν^2) * [ 1  ν  0
@@ -97,8 +97,8 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
                           0  0  (1-ν)/2 ]
         B = zeros(3,72)
         for ii = 1:36
-            Ni_xi  = N_xi[ii]
-            Ni_eta = N_eta[ii]
+            Ni_xi  = dN_dξ[ii]
+            Ni_eta = dN_dη[ii]
             Ni_xy = J\[Ni_xi; Ni_eta]
             B[1,(ii-1)*2+1] = Ni_xy[1]
             B[2,(ii-1)*2+2] = Ni_xy[2]
