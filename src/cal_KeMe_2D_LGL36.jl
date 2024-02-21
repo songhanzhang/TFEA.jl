@@ -86,9 +86,9 @@ function cal_KeMe_2D_LGL36(E,ρ,ν,t,Nodes_xy,pml_interface,model_boundary,eta_m
                 end
             end
         end
-        dx_dξ = dN_dξ  * Nodes_xy[:,1]
+        dx_dξ = dN_dξ * Nodes_xy[:,1]
         dx_dη = dN_dη * Nodes_xy[:,1]
-        dy_dξ = dN_dξ  * Nodes_xy[:,2]
+        dy_dξ = dN_dξ * Nodes_xy[:,2]
         dy_dη = dN_dη * Nodes_xy[:,2]
         J = [ dx_dξ  dy_dξ
               dx_dη  dy_dη ]
