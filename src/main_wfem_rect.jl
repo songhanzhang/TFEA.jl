@@ -170,7 +170,7 @@ fig_kw = plot(
     frame_style = :box,
     tickfontsize = 10
 )
-color_ax = [:dodgerblue, :green3, :firebrick, :blue, :pink, :gray, :hotpink1,:orange]
+color_ax = [:dodgerblue, :green3, :firebrick, :blue, :pink, :gray, :hotpink1, :orange]
 for ii = 1:8
     scatter!(
         s_ax, ω_save[ii,:]/2/pi/1e3, label = "",
